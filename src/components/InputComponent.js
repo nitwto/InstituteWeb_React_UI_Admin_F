@@ -46,7 +46,9 @@ export const InputComponent = (props) => {
               )
             }
             autoFocus={props.fieldData.autoFocus}
-            renderInput={(params) => <TextField {...params} autoFocus={props.fieldData.autoFocus}/>}
+            renderInput={(params) => (
+              <TextField {...params} autoFocus={props.fieldData.autoFocus} />
+            )}
           />
         </LocalizationProvider>
       );
