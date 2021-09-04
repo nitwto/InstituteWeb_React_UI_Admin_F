@@ -15,6 +15,7 @@ import {
 } from "@material-ui/core/";
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, LocalizationProvider } from "@material-ui/lab";
+import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 
 import { isCorrect } from "../util/formHelpers";
 
@@ -40,7 +41,7 @@ function NotificationForm() {
     setNotificaitonDetails(getInitialState(notificationSchema));
     setFocus(false);
     setZeroSubmission(true);
-  }
+  };
 
   const focusElement = (formFields) => {
     for (const field in formFields) {
@@ -106,8 +107,23 @@ function NotificationForm() {
         }
       }
     }
+    if (!zeroSubmission) {
+      if (
+        Date.parse(notificationDetails["start_date"]) / (3600 * 24) >
+        Date.parse(notificationDetails["end_date"]) / (3600 * 24)
+      ) {
+        formFields["start_date"].error = true;
+        formFields["end_date"].error = true;
+      }
+      if (
+        Date.parse(notificationDetails["start_date"]) / (3600 * 24) <
+        Date.now() / (3600 * 24)
+      ) {
+        formFields["start_date"].error = true;
+      }
+    }
 
-    if(focus){
+    if (focus) {
       focusElement(formFields);
       setFocus(false);
     }
@@ -254,20 +270,32 @@ function NotificationForm() {
             {errorFields["url"].formHelperText}
           </FormHelperText>
         </FormControl>
-        <LocalizationProvider dateAdapter={DateFnsUtils}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             label={"Start Date"}
             value={notificationDetails["start_date"]}
             onChange={(date) => setValue("start_date", date)}
-            renderInput={(params) => <TextField {...params} style={styles} />}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                style={styles}
+                error={errorFields["start_date"].error}
+              />
+            )}
           />
         </LocalizationProvider>
-        <LocalizationProvider dateAdapter={DateFnsUtils}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             label={"End Date"}
             value={notificationDetails["end_date"]}
             onChange={(date) => setValue("end_date", date)}
-            renderInput={(params) => <TextField {...params} style={styles} />}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                style={styles}
+                error={errorFields["end_date"].error}
+              />
+            )}
           />
         </LocalizationProvider>
       </div>

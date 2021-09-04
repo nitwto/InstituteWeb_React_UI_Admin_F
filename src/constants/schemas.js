@@ -35,10 +35,10 @@ export const notificationSchema = {
   },
   start_date: {
     type: Date,
-    default: Date.now(),
+    default: new Date(),
   },
   end_date: {
     type: Date,
-    default: Date.now() + 90 * 24 * 60 * 60 * 1000,
+    default: new Date(),
   },
 };
