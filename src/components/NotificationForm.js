@@ -148,9 +148,8 @@ function NotificationForm() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
     if (isCorrect(notificationSchema, notificationDetails)) {
-      console.log();
+      console.log(notificationDetails);
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -175,7 +174,7 @@ function NotificationForm() {
   const errorFields = getFormFields();
   return (
     <React.Fragment>
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", flexDirection: "column" , alignContent :"center"}}>
         <FormControl fullWidth={true} style={styles} required>
           <InputLabel htmlFor={"title"}>{"title"}</InputLabel>
           <Input
@@ -299,7 +298,7 @@ function NotificationForm() {
           />
         </LocalizationProvider>
       </div>
-      <div>
+      <div style={{display:"flex", justifyContent: "center" }}>
         <Button
           style={{ marginLeft: "10px" }}
           variant="contained"
