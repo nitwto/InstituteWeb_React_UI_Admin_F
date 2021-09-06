@@ -1,9 +1,16 @@
 import "../styles/App.css";
 import React from "react";
-import NotificationForm from "../components/NotificationForm";
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Editor from '../pages/editor'
+import Forms from "../pages/forms";
 
-function App() {
-  return <NotificationForm />;
+export default function App() {
+  return (
+    <div className='App'>
+      <Router>
+        <Route exact path='/' component={Forms} />
+        <Route exact path='/E1' component={Editor} />
+      </Router>
+    </div>
+  );
 }
-
-export default App;
