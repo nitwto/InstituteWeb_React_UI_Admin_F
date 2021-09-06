@@ -1,36 +1,31 @@
 import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import EditorJS from "@editorjs/editorjs";
-
 import {data} from '../constants/dataForEditor'
 import {tools} from '../constants/toolsForEditor'
+  
+var editorJson = ''
 
+function onSaveHandler(data,setPageJson) {  
+    console.log(data)
+    editorJson = JSON.stringify(data)
+    setPageJson(data)
+    console.log(editorJson)
+  }  
 
 function Editor() {
     // const [pageTitle,setPageTitle] = useState('');
     // const [pageUrl,setPageUrl] = useState('')
+    const [pageJson,setPageJson] = useState(data)
     const editor = new EditorJS({
         /**
          * Enable/Disable the read only mode
          */
         readOnly: false,
-
-        /**
-         * Wrapper of Editor
-         */
         holder: 'editorjs',
-
         tools: tools,
-
-        /**
-         * This Tool will be used as default
-         */
-        // defaultBlock: 'paragraph',
-
-        /**
-         * Initial Editor data
-         */
-        data: data    });
+        data: pageJson   
+    });
 
 
     return (
@@ -40,7 +35,7 @@ function Editor() {
                     editor.save()
                         .then((outputdata) => {
                             outputdata.title = 'hm'
-                            console.log(outputdata);
+                            onSaveHandler(outputdata,setPageJson)
                         })
                         .catch(err => {
                             console.log("ERROR");
@@ -51,7 +46,7 @@ function Editor() {
                 </button>
             </div>
             <div style={{margin:'10px'}}>
-                <TextField required id="standard-required" label="Required" defaultValue="Hello World"/>
+                <TextField id="standard-json" label="Json from editor" value={JSON.stringify(pageJson)}/>
             </div>
             <div id="editorjs"></div>
         </div>
