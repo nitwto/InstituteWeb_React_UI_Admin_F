@@ -4,7 +4,6 @@ export const notificationSchema = {
     trim: true,
     required: true,
     maxlength: 32,
-    minlength: 3
   },
   summary: {
     type: String,
@@ -33,12 +32,20 @@ export const notificationSchema = {
     type: String,
     required: true,
   },
+  photo: {
+    data: Buffer,
+    contentType: String,
+  },
   start_date: {
     type: Date,
-    default: new Date(),
+    default: Date.now(),
   },
   end_date: {
     type: Date,
-    default: new Date(),
+    default: Date.now() + 90 * 24 * 60 * 60 * 1000,
+  },
+  department: {
+    type: String,
+    required: true
   },
 };

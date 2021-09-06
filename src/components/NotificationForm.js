@@ -12,12 +12,18 @@ import {
   Checkbox,
   TextField,
   Button,
+  Select,
+  MenuItem,
+  Alert,
+  Collapse,
+  IconButton, 
 } from "@material-ui/core/";
-import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, LocalizationProvider } from "@material-ui/lab";
 import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
+import CloseIcon from '@material-ui/icons/Close';
 
 import { isCorrect } from "../util/formHelpers";
+import { DEPARTMENTS } from "../constants/extras";
 
 function NotificationForm() {
   const [notificationDetails, setNotificaitonDetails] = useState(
@@ -25,6 +31,8 @@ function NotificationForm() {
   );
   const [zeroSubmission, setZeroSubmission] = useState(true);
   const [focus, setFocus] = useState(false);
+  const [successAlert, setSuccessAlert] = useState(false);
+  const [failureAlert, setFailureAlert] = useState(false); 
 
   const titleRef = useRef(null);
   const summaryRef = useRef(null);
@@ -141,9 +149,11 @@ function NotificationForm() {
 
   const onChangeHandler = (object, type, date = null) => {
     let value = object.target.value;
+    let obj = object.target.id;
+    if (!obj) obj = object.target.name;
     if (type === Boolean) value = object.target.checked;
 
-    setValue(object.target.id, value);
+    setValue(obj, value);
   };
 
   const submitHandler = async (e) => {
@@ -159,8 +169,13 @@ function NotificationForm() {
         "http://localhost:8000/api/notification/add",
         requestOptions
       );
+      if(!response){
+        setFailureAlert(true);
+        return;
+      }
       const data = await response.json();
       console.log(data);
+      setSuccessAlert(true);
       resetAll();
     } else {
       setZeroSubmission(false);
@@ -174,7 +189,52 @@ function NotificationForm() {
   const errorFields = getFormFields();
   return (
     <React.Fragment>
-      <div style={{ display: "flex", flexWrap: "wrap", flexDirection: "column" , alignContent :"center"}}>
+      <Collapse in={successAlert}>
+        <Alert
+          severity="success"
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setSuccessAlert(false);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+        >
+          The notification has been accepted succesfully.
+        </Alert>
+      </Collapse>
+      <Collapse in={failureAlert}>
+        <Alert
+          severity="error"
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setFailureAlert(false);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+        >
+          The notification has been accepted succesfully.
+        </Alert>
+      </Collapse>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          flexDirection: "column",
+          alignContent: "center",
+        }}
+      >
         <FormControl fullWidth={true} style={styles} required>
           <InputLabel htmlFor={"title"}>{"title"}</InputLabel>
           <Input
@@ -229,6 +289,24 @@ function NotificationForm() {
           />
           <FormHelperText id="my-helper-text">
             {errorFields["description"].formHelperText}
+          </FormHelperText>
+        </FormControl>
+        <FormControl variant="filled" fullWidth={true} style={styles} required>
+          <InputLabel id="demo-simple-select-label">Department</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="department"
+            name="department"
+            value={notificationDetails["department"]}
+            onChange={(obj) => onChangeHandler(obj, String)}
+            error={errorFields["department"].error}
+          >
+            {DEPARTMENTS.map((department) => {
+              return <MenuItem value={department}>{department}</MenuItem>;
+            })}
+          </Select>
+          <FormHelperText id="my-helper-text">
+            {errorFields["department"].formHelperText}
           </FormHelperText>
         </FormControl>
         <FormControl fullWidth={true} style={styles}>
@@ -298,7 +376,7 @@ function NotificationForm() {
           />
         </LocalizationProvider>
       </div>
-      <div style={{display:"flex", justifyContent: "center" }}>
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <Button
           style={{ marginLeft: "10px" }}
           variant="contained"
