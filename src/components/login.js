@@ -1,5 +1,8 @@
 import React, { useRef, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { authActions } from "../store/authSlice";
 
+import validator from "validator";
 import {
   FormControl,
   Input,
@@ -17,8 +20,8 @@ import {
   Link,
 } from "@material-ui/core/";
 
-export default function Login() {
-  const [signUp, setSignUp] = useState(true);
+export default function Login(props) {
+  const [signUp, setSignUp] = useState(false);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -27,6 +30,8 @@ export default function Login() {
   const userNameRef = useRef(null);
   const passwordRef = useRef(null);
   const emailRef = useRef(null);
+  const dispatch = useDispatch();
+  const authDetails = useSelector((state) => state.auth);
 
   let userNameError = false;
   let passwordError = false;
@@ -62,17 +67,55 @@ export default function Login() {
   };
 
   const isCorrect = () => {
-    if (
-      email === "" ||
-      password === "" ||
-      password.length < 3
-    ) {
+    if (email === "" || password === "" || password.length < 3) {
       return false;
     }
 
     if (signUp && (userName === "" || userName.length < 3)) return false;
 
     return true;
+  };
+
+  const getError = () => {
+    if (email === "" || !validator.isEmail(email)) {
+      emailError = "true";
+      if (email === "") {
+        emailErrorText = "Email is required.";
+      } else {
+        emailErrorText = "Valid email is required.";
+      }
+    }
+
+    if (signUp) {
+      if (password === "" || password.length < 3) {
+        passwordError = true;
+        if (password === "") {
+          passwordErrorText = "Password is required.";
+        } else {
+          passwordErrorText = "Password needs to be of greater than 3 chars.";
+        }
+      }
+
+      if (userName === "" || userName.length < 3) {
+        userNameError = true;
+        if (userName === "") {
+          userNameErrorText = "userName is required.";
+        } else {
+          userNameErrorText = "userName needs to be of greater than 3 chars.";
+        }
+      }
+    }
+
+    if (focus) {
+      if (emailError) {
+        emailRef.current.focus();
+      } else if (signUp && userNameError) {
+        userNameRef.current.focus();
+      } else {
+        passwordRef.current.focus();
+      }
+      setFocus(false);
+    }
   };
 
   const submitHandler = async (e) => {
@@ -97,6 +140,7 @@ export default function Login() {
         }
         const data = await response.json();
         console.log(data);
+        setSignUp(false);
       } else {
         const requestOptions = {
           method: "POST",
@@ -114,7 +158,13 @@ export default function Login() {
           return;
         }
         const data = await response.json();
-        console.log(data, "go");
+        console.log(data);
+        dispatch(
+          authActions.setField({
+            data,
+          })
+        );
+        props.handleTab("Home");
       }
       resetAll();
     } else {
@@ -123,6 +173,7 @@ export default function Login() {
     }
   };
 
+  if (!zeroSubmission) getError();
   return (
     <React.Fragment>
       <div
