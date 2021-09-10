@@ -169,12 +169,22 @@ function NotificationForm(props) {
         requestOptions
       );
       if (!response) {
-        props.addAlert(<AlertComponent type="failure" text="The notification wasn't added. Please try later."/>);
+        props.addAlert(
+          <AlertComponent
+            type="failure"
+            text="The notification wasn't added. Please try later."
+          />
+        );
         return;
       }
       const data = await response.json();
       console.log(data);
-      props.addAlert(<AlertComponent type="success" text="The notification has been added to the website."/>);
+      props.addAlert(
+        <AlertComponent
+          type="success"
+          text="The notification has been added to the website."
+        />
+      );
       resetAll();
     } else {
       setZeroSubmission(false);

@@ -136,7 +136,12 @@ export default function Login(props) {
         }
         const data = await response.json();
         console.log(data);
-        setSignUp(false);
+        if (data.err) {
+          props.addAlert(<AlertComponent type="error" text={data.err} />);
+        } else {
+          setSignUp(false);
+          resetAll();
+        }
       } else {
         const requestOptions = {
           method: "POST",
@@ -155,21 +160,25 @@ export default function Login(props) {
         }
         const data = await response.json();
         console.log(data);
-        dispatch(
-          authActions.setField({
-            data,
-          })
-        );
-        props.addAlert(
-          <AlertComponent
-            type="success"
-            text="You have been logged in successfully."
-          />
-        );
+        if (data.error) {
+          props.addAlert(<AlertComponent type="error" text={data.error} />);
+        } else {
+          dispatch(
+            authActions.setField({
+              data,
+            })
+          );
+          props.addAlert(
+            <AlertComponent
+              type="success"
+              text="You have been logged in successfully."
+            />
+          );
 
-        props.handleTab("Home");
+          props.handleTab("Home");
+          resetAll();
+        }
       }
-      resetAll();
     } else {
       setZeroSubmission(false);
       setFocus(true);

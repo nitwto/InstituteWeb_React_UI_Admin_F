@@ -76,7 +76,7 @@ export default function Forms() {
       return newState;
     });
     console.log(alertArray);
-  }
+  };
 
   const handleSignOut = async () => {
     const requestOptions = {
@@ -133,14 +133,16 @@ export default function Forms() {
               >
                 Home
               </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  setPresentTab("NotificationForm");
-                  handleClose();
-                }}
-              >
-                Notification Form
-              </MenuItem>
+              {authDetails.user && (
+                <MenuItem
+                  onClick={() => {
+                    setPresentTab("NotificationForm");
+                    handleClose();
+                  }}
+                >
+                  Notification Form
+                </MenuItem>
+              )}
             </Menu>
             <Typography variant="h6" className={classes.title}>
               Portal for Website
@@ -194,18 +196,18 @@ export default function Forms() {
           </Toolbar>
         </AppBar>
       </div>
-      <div>
-        {alertArray}
-      </div>
+      <div>{alertArray}</div>
       {presentTab === "Home" && (
         <h1>Welcome To The Institute Website Portal</h1>
       )}
       {presentTab === "NotificationForm" && (
         <div>
-          <NotificationForm addAlert={addAlert}/>
+          <NotificationForm addAlert={addAlert} />
         </div>
       )}
-      {presentTab === "Login" && <Login handleTab={handlePresentTab} addAlert={addAlert}/>}
+      {presentTab === "Login" && (
+        <Login handleTab={handlePresentTab} addAlert={addAlert} />
+      )}
     </React.Fragment>
   );
 }

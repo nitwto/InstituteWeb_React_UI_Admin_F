@@ -13,9 +13,9 @@ const authSlice = createSlice({
       let newState = { ...action.payload.data };
       return newState;
     },
-    reset(state, action){
+    reset(state, action) {
       return initialState;
-    }
+    },
   },
 });
 
