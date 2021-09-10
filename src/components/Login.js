@@ -139,6 +139,12 @@ export default function Login(props) {
         if (data.err) {
           props.addAlert(<AlertComponent type="error" text={data.err} />);
         } else {
+          props.addAlert(
+            <AlertComponent
+              type="success"
+              text="New user has been added successfully"
+            />
+          );
           setSignUp(false);
           resetAll();
         }
@@ -188,6 +194,16 @@ export default function Login(props) {
   if (!zeroSubmission) getError();
   return (
     <React.Fragment>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          flexDirection: "column",
+          alignContent: "center",
+        }}
+      >
+        <h2>{signUp ? "Sign Up" : "Sign In"}</h2>
+      </div>
       <div
         style={{
           display: "flex",
