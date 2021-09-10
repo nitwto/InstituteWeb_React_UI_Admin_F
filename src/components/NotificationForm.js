@@ -16,23 +16,22 @@ import {
   MenuItem,
   Alert,
   Collapse,
-  IconButton, 
+  IconButton,
 } from "@material-ui/core/";
 import { DatePicker, LocalizationProvider } from "@material-ui/lab";
 import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from "@material-ui/icons/Close";
 
 import { isCorrect } from "../util/formHelpers";
 import { DEPARTMENTS } from "../constants/extras";
+import AlertComponent from "./AlertComponent";
 
-function NotificationForm() {
+function NotificationForm(props) {
   const [notificationDetails, setNotificaitonDetails] = useState(
     getInitialState(notificationSchema)
   );
   const [zeroSubmission, setZeroSubmission] = useState(true);
   const [focus, setFocus] = useState(false);
-  const [successAlert, setSuccessAlert] = useState(false);
-  const [failureAlert, setFailureAlert] = useState(false); 
 
   const titleRef = useRef(null);
   const summaryRef = useRef(null);
@@ -169,13 +168,13 @@ function NotificationForm() {
         "http://localhost:8000/api/notification/add",
         requestOptions
       );
-      if(!response){
-        setFailureAlert(true);
+      if (!response) {
+        props.addAlert(<AlertComponent type="failure" text="The notification wasn't added. Please try later."/>);
         return;
       }
       const data = await response.json();
       console.log(data);
-      setSuccessAlert(true);
+      props.addAlert(<AlertComponent type="success" text="The notification has been added to the website."/>);
       resetAll();
     } else {
       setZeroSubmission(false);
@@ -189,44 +188,9 @@ function NotificationForm() {
   const errorFields = getFormFields();
   return (
     <React.Fragment>
-      <Collapse in={successAlert}>
-        <Alert
-          severity="success"
-          action={
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={() => {
-                setSuccessAlert(false);
-              }}
-            >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }
-        >
-          The notification has been accepted succesfully.
-        </Alert>
-      </Collapse>
-      <Collapse in={failureAlert}>
-        <Alert
-          severity="error"
-          action={
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={() => {
-                setFailureAlert(false);
-              }}
-            >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }
-        >
-          The notification has been accepted succesfully.
-        </Alert>
-      </Collapse>
+      <div>
+        <h2>Notification Form</h2>
+      </div>
       <div
         style={{
           display: "flex",

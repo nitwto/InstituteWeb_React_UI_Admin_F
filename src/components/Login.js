@@ -12,13 +12,9 @@ import {
   Checkbox,
   TextField,
   Button,
-  Select,
-  MenuItem,
-  Alert,
-  Collapse,
-  IconButton,
   Link,
 } from "@material-ui/core/";
+import AlertComponent from "./AlertComponent";
 
 export default function Login(props) {
   const [signUp, setSignUp] = useState(false);
@@ -164,6 +160,13 @@ export default function Login(props) {
             data,
           })
         );
+        props.addAlert(
+          <AlertComponent
+            type="success"
+            text="You have been logged in successfully."
+          />
+        );
+
         props.handleTab("Home");
       }
       resetAll();

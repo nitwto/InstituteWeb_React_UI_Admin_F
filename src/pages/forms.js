@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import NotificationForm from "../components/NotificationForm";
-import Login from "../components/login";
+import Login from "../components/Login";
 import { useSelector, useDispatch } from "react-redux";
+import AlertComponent from "../components/AlertComponent";
 
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -14,6 +15,9 @@ import { makeStyles } from "@material-ui/styles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { authActions } from "../store/authSlice";
+import { Collapse } from "@material-ui/core";
+import { Alert } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 
 // Add other forms and route using react-router-dom
 
@@ -31,8 +35,11 @@ export default function Forms() {
   const [presentTab, setPresentTab] = useState("Home");
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorElProfile, setAnchorElProfile] = useState(null);
+  const [successAlert, setSuccessAlert] = useState(false);
+  const [alertTextArray, setAlertTextArray] = useState("");
   const dispatch = useDispatch();
   const authDetails = useSelector((state) => state.auth);
+  const [alertArray, setAlertArray] = useState([]);
 
   const open = Boolean(anchorEl);
   const openProfile = Boolean(anchorElProfile);
@@ -55,6 +62,20 @@ export default function Forms() {
 
   const handlePresentTab = (tab) => {
     setPresentTab(tab);
+  };
+
+  const handleSuccessAlert = (text) => {
+    setSuccessAlert(true);
+    setAlertTextArray(text);
+  };
+
+  const addAlert = (alert) => {
+    setAlertArray((prevState) => {
+      let newState = [...prevState];
+      newState.push(alert);
+      return newState;
+    });
+    console.log(alertArray);
   }
 
   const handleSignOut = async () => {
@@ -72,7 +93,7 @@ export default function Forms() {
     }
 
     dispatch(authActions.reset());
-  }
+  };
 
   return (
     <React.Fragment>
@@ -173,18 +194,18 @@ export default function Forms() {
           </Toolbar>
         </AppBar>
       </div>
+      <div>
+        {alertArray}
+      </div>
       {presentTab === "Home" && (
         <h1>Welcome To The Institute Website Portal</h1>
       )}
       {presentTab === "NotificationForm" && (
         <div>
-          <h2>Notification Form</h2>
-          <div>
-            <NotificationForm />
-          </div>
+          <NotificationForm addAlert={addAlert}/>
         </div>
       )}
-      {presentTab === "Login" && <Login handleTab={handlePresentTab}/>}
+      {presentTab === "Login" && <Login handleTab={handlePresentTab} addAlert={addAlert}/>}
     </React.Fragment>
   );
 }
