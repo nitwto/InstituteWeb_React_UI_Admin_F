@@ -59,11 +59,18 @@ export default function Login(props) {
   };
 
   const isCorrect = () => {
-    if (email === "" || password === "" || password.length < 3) {
+    if (email === "" || !validator.isEmail(email)) {
       return false;
     }
 
-    if (signUp && (userName === "" || userName.length < 3)) return false;
+    if (
+      signUp &&
+      (userName === "" ||
+        userName.length < 3 ||
+        password === "" ||
+        password.length < 3)
+    )
+      return false;
 
     return true;
   };
@@ -163,6 +170,7 @@ export default function Login(props) {
         const data = await response.json();
         console.log(data);
         if (data.error) {
+          console.log("go");
           props.addAlert(<AlertComponent type="error" text={data.error} />);
         } else {
           dispatch(

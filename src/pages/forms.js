@@ -14,6 +14,7 @@ import { makeStyles } from "@material-ui/styles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { authActions } from "../store/authSlice";
+import MenuComponent from "../components/MenuComponent";
 
 // Add other forms and route using react-router-dom
 
@@ -80,8 +81,8 @@ export default function Forms() {
     if (!response) {
       return;
     }
-
     dispatch(authActions.reset());
+    handlePresentTab("Home");
   };
 
   return (
