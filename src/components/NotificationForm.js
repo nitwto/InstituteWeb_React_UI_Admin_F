@@ -14,13 +14,9 @@ import {
   Button,
   Select,
   MenuItem,
-  Alert,
-  Collapse,
-  IconButton,
 } from "@material-ui/core/";
 import { DatePicker, LocalizationProvider } from "@material-ui/lab";
 import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
-import CloseIcon from "@material-ui/icons/Close";
 
 import { isCorrect } from "../util/formHelpers";
 import { DEPARTMENTS } from "../constants/extras";

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import NotificationForm from "../components/NotificationForm";
 import Login from "../components/Login";
 import { useSelector, useDispatch } from "react-redux";
-import AlertComponent from "../components/AlertComponent";
 
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -15,9 +14,6 @@ import { makeStyles } from "@material-ui/styles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { authActions } from "../store/authSlice";
-import { Collapse } from "@material-ui/core";
-import { Alert } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
 
 // Add other forms and route using react-router-dom
 
@@ -35,8 +31,6 @@ export default function Forms() {
   const [presentTab, setPresentTab] = useState("Home");
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorElProfile, setAnchorElProfile] = useState(null);
-  const [successAlert, setSuccessAlert] = useState(false);
-  const [alertTextArray, setAlertTextArray] = useState("");
   const dispatch = useDispatch();
   const authDetails = useSelector((state) => state.auth);
   const [alertArray, setAlertArray] = useState([]);
@@ -62,11 +56,6 @@ export default function Forms() {
 
   const handlePresentTab = (tab) => {
     setPresentTab(tab);
-  };
-
-  const handleSuccessAlert = (text) => {
-    setSuccessAlert(true);
-    setAlertTextArray(text);
   };
 
   const addAlert = (alert) => {

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { authActions } from "../store/authSlice";
 
 import validator from "validator";
@@ -8,9 +8,6 @@ import {
   Input,
   InputLabel,
   FormHelperText,
-  FormControlLabel,
-  Checkbox,
-  TextField,
   Button,
   Link,
 } from "@material-ui/core/";
@@ -27,7 +24,6 @@ export default function Login(props) {
   const passwordRef = useRef(null);
   const emailRef = useRef(null);
   const dispatch = useDispatch();
-  const authDetails = useSelector((state) => state.auth);
 
   let userNameError = false;
   let passwordError = false;
