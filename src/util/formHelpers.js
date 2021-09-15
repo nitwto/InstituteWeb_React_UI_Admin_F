@@ -5,7 +5,7 @@ export const isCorrect = (schema, fieldDetails) => {
       if (schema[field].minlength > fieldDetails[field]) return false;
       if (schema[field].maxlength < fieldDetails[field]) return false;
     }
-  } 
+  }
 
   return true;
 };

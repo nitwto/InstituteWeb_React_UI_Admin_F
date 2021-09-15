@@ -16,7 +16,7 @@ import {
   MenuItem,
 } from "@material-ui/core/";
 import { DatePicker, LocalizationProvider } from "@material-ui/lab";
-import AdapterDateFns from "@material-ui/lab/AdapterDateFns"; 
+import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 
 import { isCorrect } from "../util/formHelpers";
 import { DEPARTMENTS } from "../constants/extras";

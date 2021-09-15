@@ -14,7 +14,7 @@ import { makeStyles } from "@material-ui/styles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { authActions } from "../store/authSlice";
-import MenuComponent from "../components/MenuComponent";
+import RightsForm from "../components/RightsForm";
 
 // Add other forms and route using react-router-dom
 
@@ -133,6 +133,16 @@ export default function Forms() {
                   Notification Form
                 </MenuItem>
               )}
+              {authDetails.user && authDetails.user.role === 0 && (
+                <MenuItem
+                  onClick={() => {
+                    setPresentTab("RightsForm");
+                    handleClose();
+                  }}
+                >
+                  Rights Form
+                </MenuItem>
+              )}
             </Menu>
             <Typography variant="h6" className={classes.title}>
               Portal for Website
@@ -197,6 +207,9 @@ export default function Forms() {
       )}
       {presentTab === "Login" && (
         <Login handleTab={handlePresentTab} addAlert={addAlert} />
+      )}
+      {presentTab === "RightsForm" && (
+        <RightsForm handleTab={handlePresentTab} addAlert={addAlert} />
       )}
     </React.Fragment>
   );
