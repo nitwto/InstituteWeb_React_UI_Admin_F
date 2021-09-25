@@ -64,7 +64,7 @@ export default function Forms() {
 
   const handleEditPageDetails = (data) => {
     setEditPageDetails(data);
-  }
+  };
 
   const addAlert = (alert) => {
     setAlertArray((prevState) => {
@@ -219,7 +219,7 @@ export default function Forms() {
       )}
       {presentTab === "NotificationForm" && (
         <div>
-          <NotificationForm addAlert={addAlert} />
+          <NotificationForm addAlert={addAlert} token={authDetails.token}/>
         </div>
       )}
       {presentTab === "Login" && (
@@ -229,9 +229,21 @@ export default function Forms() {
         <RightsForm handleTab={handlePresentTab} addAlert={addAlert} />
       )}
       {presentTab === "EditorForm" && (
-        <EditorForm handleTab={handlePresentTab} addAlert={addAlert} handlePageChange={handleEditPageDetails} />
+        <EditorForm
+          handleTab={handlePresentTab}
+          addAlert={addAlert}
+          handlePageChange={handleEditPageDetails}
+          token={authDetails.token}
+        />
       )}
-      {presentTab === "PageEditor" && <PageEditorComponent pageDetails={editPageDetails}/>}
+      {presentTab === "PageEditor" && (
+        <PageEditorComponent
+          pageDetails={editPageDetails}
+          handleTab={handlePresentTab}
+          addAlert={addAlert}
+          token={authDetails.token}
+        />
+      )}
     </React.Fragment>
   );
 }

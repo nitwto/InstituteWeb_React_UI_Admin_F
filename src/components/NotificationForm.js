@@ -29,7 +29,6 @@ function NotificationForm(props) {
   );
   const [zeroSubmission, setZeroSubmission] = useState(true);
   const [focus, setFocus] = useState(false);
-  const authDetails = useSelector((state) => state.auth);
 
   const titleRef = useRef(null);
   const summaryRef = useRef(null);
@@ -156,12 +155,12 @@ function NotificationForm(props) {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (isCorrect(notificationSchema, notificationDetails)) {
-      console.log(`Bearer ${authDetails.token}`);
+      console.log(`Bearer ${props.token}`);
       const requestOptions = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${authDetails.token}`,
+          Authorization: `Bearer ${props.token}`,
         },
         body: JSON.stringify(notificationDetails),
       };

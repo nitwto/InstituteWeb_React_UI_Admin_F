@@ -15,8 +15,6 @@ export default function EditorForm(props) {
   const [url, setUrl] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  const authDetails = useSelector((state) => state.auth);
-
   let urlError = "";
   let urlErrorText = "";
 
@@ -28,7 +26,7 @@ export default function EditorForm(props) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${authDetails.token}`,
+          Authorization: `Bearer ${props.token}`,
         },
         body: JSON.stringify({ url }),
       };
