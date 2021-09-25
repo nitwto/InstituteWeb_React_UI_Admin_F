@@ -15,6 +15,8 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { authActions } from "../store/authSlice";
 import RightsForm from "../components/RightsForm";
+import EditorForm from "../components/EditorForm";
+import PageEditorComponent from "../components/PageEditorComponent";
 
 // Add other forms and route using react-router-dom
 
@@ -32,6 +34,7 @@ export default function Forms() {
   const [presentTab, setPresentTab] = useState("Home");
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorElProfile, setAnchorElProfile] = useState(null);
+  const [editPageDetails, setEditPageDetails] = useState(null);
   const dispatch = useDispatch();
   const authDetails = useSelector((state) => state.auth);
   const [alertArray, setAlertArray] = useState([]);
@@ -58,6 +61,10 @@ export default function Forms() {
   const handlePresentTab = (tab) => {
     setPresentTab(tab);
   };
+
+  const handleEditPageDetails = (data) => {
+    setEditPageDetails(data);
+  }
 
   const addAlert = (alert) => {
     setAlertArray((prevState) => {
@@ -143,6 +150,16 @@ export default function Forms() {
                   Rights Form
                 </MenuItem>
               )}
+              {authDetails.user && (
+                <MenuItem
+                  onClick={() => {
+                    setPresentTab("EditorForm");
+                    handleClose();
+                  }}
+                >
+                  Editor Form
+                </MenuItem>
+              )}
             </Menu>
             <Typography variant="h6" className={classes.title}>
               Portal for Website
@@ -211,6 +228,10 @@ export default function Forms() {
       {presentTab === "RightsForm" && (
         <RightsForm handleTab={handlePresentTab} addAlert={addAlert} />
       )}
+      {presentTab === "EditorForm" && (
+        <EditorForm handleTab={handlePresentTab} addAlert={addAlert} handlePageChange={handleEditPageDetails} />
+      )}
+      {presentTab === "PageEditor" && <PageEditorComponent pageDetails={editPageDetails}/>}
     </React.Fragment>
   );
 }

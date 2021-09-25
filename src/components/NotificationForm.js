@@ -2,6 +2,7 @@ import "../styles/App.css";
 import React, { useState, useRef } from "react";
 import { notificationSchema } from "../constants/schemas";
 import { getInitialState } from "../util/formHelpers";
+import { useSelector } from "react-redux";
 
 import {
   FormControl,
@@ -28,6 +29,7 @@ function NotificationForm(props) {
   );
   const [zeroSubmission, setZeroSubmission] = useState(true);
   const [focus, setFocus] = useState(false);
+  const authDetails = useSelector((state) => state.auth);
 
   const titleRef = useRef(null);
   const summaryRef = useRef(null);
@@ -154,10 +156,13 @@ function NotificationForm(props) {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (isCorrect(notificationSchema, notificationDetails)) {
-      console.log(notificationDetails);
+      console.log(`Bearer ${authDetails.token}`);
       const requestOptions = {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authDetails.token}`,
+        },
         body: JSON.stringify(notificationDetails),
       };
       const response = await fetch(
@@ -167,7 +172,7 @@ function NotificationForm(props) {
       if (!response) {
         props.addAlert(
           <AlertComponent
-            type="failure"
+            type="error"
             text="The notification wasn't added. Please try later."
           />
         );

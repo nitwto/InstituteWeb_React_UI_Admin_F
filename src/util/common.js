@@ -21,7 +21,7 @@ var flatten = function (a, shallow, r) {
     return r.concat.apply(r, a);
   }
   for (let i = 0; i < a.length; i++) {
-    if (a[i].constructor == Array) {
+    if (a[i].constructor === Array) {
       flatten(a[i], shallow, r);
     } else {
       r.push(a[i]);
