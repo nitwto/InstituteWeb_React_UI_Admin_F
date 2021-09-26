@@ -46,6 +46,36 @@ export const notificationSchema = {
   },
   department: {
     type: String,
-    required: true
+    required: true,
+  },
+};
+
+export const PageSchema = {
+  title: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  path: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  url: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  blocks: {
+    type: Array,
+    default: [],
+  },
+  time: {
+    type: Number,
+    required: true,
+  },
+  version: {
+    type: String,
+    required: true,
   },
 };

@@ -5,7 +5,7 @@ import { Button } from "@material-ui/core";
 import AlertComponent from "./AlertComponent";
 
 export default function PageEditorComponent(props) {
-  const [pageJson, setPageJson] = useState({"blocks": props.pageDetails.blocks});
+  const [pageJson] = useState({"blocks": props.pageDetails.blocks});
   const editor = new EditorJS({
     readOnly: false,
     holder: "editorjs",
@@ -13,22 +13,33 @@ export default function PageEditorComponent(props) {
     data: pageJson,
   });
 
-  const { title } = props.pageDetails;
+  const { title, url, path } = props.pageDetails;
 
-  const onSaveHandler = async () => {
+  const onSaveHandler = async (outputData) => {
+
+		let method = "PUT";
+		let api = "http://localhost:8000/api/page/update";
+		let successMessage = "The page has been updated successfully.";
+		if(props.newPage){
+			method = "POST";
+			api = "http://localhost:8000/api/page/add";
+			successMessage = "New page has been added successfully";
+		}
+
 		const requestOptions = {
-			method: "PUT",
+			method,
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${props.token}`,
 			},
-			body: JSON.stringify({  }),
+			body: JSON.stringify({...outputData, title, url, path}),
 		};
 		const response = await fetch(
-			"http://localhost:8000/api/page/get",
+			api,
 			requestOptions
 		);
 		const data = await response.json();
+		console.log(data);
 		if(data.error){
 			props.addAlert(
 				<AlertComponent
@@ -40,7 +51,7 @@ export default function PageEditorComponent(props) {
 			props.addAlert(
 				<AlertComponent
 					type="success"
-					text="The page has been updated successfully."
+					text={successMessage}
 				/>
 			);
 			props.handleTab("EditorForm");
@@ -60,17 +71,17 @@ export default function PageEditorComponent(props) {
       >
         <div style={{ margin: "10px" }}>
           <Button
-            onClick={() => {
+            onClick={(event) => {
+							event.preventDefault();
               editor
                 .save()
                 .then((outputdata) => {
-                  setPageJson(outputdata);
+									onSaveHandler(outputdata);
                 })
                 .catch((err) => {
                   console.log("ERROR");
                   console.log(err);
                 });
-              onSaveHandler();
             }}
           >
             Finalize the page

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-import AlertComponent from "./AlertComponent";
+import AlertComponent from "../components/AlertComponent";
 
 import {
   FormControl,
@@ -97,7 +97,16 @@ export default function EditorForm(props) {
             color="primary"
             onClick={onSubmit}
           >
-            Submit
+            Extract Page
+          </Button>
+        </div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            style={{ marginLeft: "10px", marginTop: "10px" }}
+            color="primary"
+            onClick={() => {props.handleTab("NewPageForm")}}
+          >
+            Want to create a new page?
           </Button>
         </div>
       </div>

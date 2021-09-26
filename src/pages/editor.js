@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import EditorJS from "@editorjs/editorjs";
-import {data} from '../constants/dataForEditor'
+import {defaultData as data} from '../constants/dataForEditor'
 import {tools} from '../constants/toolsForEditor'
   
 var editorJson = ''
@@ -34,7 +34,7 @@ function Editor() {
                 <button onClick={() => {
                     editor.save()
                         .then((outputdata) => {
-                            outputdata.title = 'hm'
+                            console.log(outputdata);
                             onSaveHandler(outputdata,setPageJson)
                         })
                         .catch(err => {

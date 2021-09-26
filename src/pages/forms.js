@@ -15,8 +15,9 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { authActions } from "../store/authSlice";
 import RightsForm from "../components/RightsForm";
-import EditorForm from "../components/EditorForm";
+import EditorForm from "../containers/EditorForm";
 import PageEditorComponent from "../components/PageEditorComponent";
+import NewPageForm from "../components/NewPageForm";
 
 // Add other forms and route using react-router-dom
 
@@ -140,7 +141,7 @@ export default function Forms() {
                   Notification Form
                 </MenuItem>
               )}
-              {authDetails.user && authDetails.user.role === 0 && (
+              {authDetails.user && (
                 <MenuItem
                   onClick={() => {
                     setPresentTab("RightsForm");
@@ -219,7 +220,7 @@ export default function Forms() {
       )}
       {presentTab === "NotificationForm" && (
         <div>
-          <NotificationForm addAlert={addAlert} token={authDetails.token}/>
+          <NotificationForm addAlert={addAlert} token={authDetails.token} />
         </div>
       )}
       {presentTab === "Login" && (
@@ -239,6 +240,13 @@ export default function Forms() {
       {presentTab === "PageEditor" && (
         <PageEditorComponent
           pageDetails={editPageDetails}
+          handleTab={handlePresentTab}
+          addAlert={addAlert}
+          token={authDetails.token}
+        />
+      )}
+      {presentTab === "NewPageForm" && (
+        <NewPageForm
           handleTab={handlePresentTab}
           addAlert={addAlert}
           token={authDetails.token}
