@@ -20,7 +20,7 @@ import { DatePicker, LocalizationProvider } from "@material-ui/lab";
 import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 
 import { isCorrect } from "../util/formHelpers";
-import { COURSES, DEPARTMENTS } from "../constants/extras";
+import { COURSES, DEPARTMENTS , API} from "../constants/extras";
 import AlertComponent from "./AlertComponent";
 
 function PlacementForm(props) {
@@ -163,7 +163,7 @@ function PlacementForm(props) {
         body: JSON.stringify(PlacementDetails),
       };
       const response = await fetch(
-        "http://localhost:8000/api/placements/add",
+        `${API}/placements/add`,
         requestOptions
       );
       if (!response) {

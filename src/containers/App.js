@@ -14,7 +14,6 @@ export default function App() {
         <Route exact path='/' component={Forms} />
         <Route exact path='/E1' component={Editor} />
         <Route exact path='/recent-upload' component={RecentFile} />
-        <Route exact path='/all-upload' component={AllUploads} />
       </Router>
     </div>
   );
