@@ -18,11 +18,11 @@ export default function PageEditorComponent(props) {
   const onSaveHandler = async (outputData) => {
 
 		let method = "PUT";
-		let api = "http://localhost:8000/api/page/update";
+		let api = "http:///insti-web-backend.herokuapp.com/api/page/update";
 		let successMessage = "The page has been updated successfully.";
 		if(props.newPage){
 			method = "POST";
-			api = "http://localhost:8000/api/page/add";
+			api = "http:///insti-web-backend.herokuapp.com/api/page/add";
 			successMessage = "New page has been added successfully";
 		}
 

@@ -31,7 +31,7 @@ export default function EditorForm(props) {
         body: JSON.stringify({ url }),
       };
       const response = await fetch(
-        "http://localhost:8000/api/page/get",
+        "http:///insti-web-backend.herokuapp.com/api/page/get",
         requestOptions
       );
       const data = await response.json();

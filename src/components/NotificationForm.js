@@ -165,7 +165,7 @@ function NotificationForm(props) {
         body: JSON.stringify(notificationDetails),
       };
       const response = await fetch(
-        "http://localhost:8000/api/notification/add",
+        "http:///insti-web-backend.herokuapp.com/api/notification/add",
         requestOptions
       );
       if (!response) {

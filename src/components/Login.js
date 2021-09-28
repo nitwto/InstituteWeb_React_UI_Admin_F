@@ -131,7 +131,7 @@ export default function Login(props) {
           }),
         };
         const response = await fetch(
-          "http://localhost:8000/api/signup",
+          "http:///insti-web-backend.herokuapp.com/api/signup",
           requestOptions
         );
         if (!response) {
@@ -161,7 +161,7 @@ export default function Login(props) {
           }),
         };
         const response = await fetch(
-          "http://localhost:8000/api/signin",
+          "http:///insti-web-backend.herokuapp.com/api/signin",
           requestOptions
         );
         if (!response) {
