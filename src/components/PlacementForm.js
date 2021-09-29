@@ -30,7 +30,6 @@ function PlacementForm(props) {
   const [zeroSubmission, setZeroSubmission] = useState(true);
   const [focus, setFocus] = useState(false);
 
-  const courseRef = useRef(null);
   const academic_yearRef = useRef(null);
   const branchRef = useRef(null);
   const min_packageRef = useRef(null);
@@ -55,9 +54,6 @@ function PlacementForm(props) {
     for (const field in formFields) {
       if (formFields[field].error) {
         switch (field) {
-          case "course":
-            courseRef.current.focus();
-            break;
           case "academic_year":
             academic_yearRef.current.focus();
             break;
