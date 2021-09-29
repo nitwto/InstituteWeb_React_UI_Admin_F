@@ -79,3 +79,44 @@ export const PageSchema = {
     required: true,
   },
 };
+
+export const placementschema = {
+  course: {
+    // B.Tech M.Tech MCA
+    type: String,
+    required: true,
+    trim: true,
+  },
+  academic_year: {
+    // 2021-22
+    type: String,
+    required: true,
+    trim: true,
+  },
+  branch: {
+    // CSE
+    type: String,
+    required: true,
+    trim: true,
+  },
+  min_package: {
+    type: Number,
+    required: true,
+  },
+  max_package: {
+    type: Number,
+    required: true,
+  },
+  avg_package: {
+    type: Number,
+    required: true,
+  },
+  total_placed: {
+    type: Number,
+    required: true,
+  },
+  total_students: {
+    type: Number,
+    required: true,
+  },
+}

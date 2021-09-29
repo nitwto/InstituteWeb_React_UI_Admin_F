@@ -25,13 +25,14 @@ export default function GetYearFiles({ year , files }) {
 
   };
 
-  const copyLink = (path1) => {
+  const copyLink = (path1) => (e) => {
+    e.preventDefault();
   
     /* Copy the text inside the text field */
     navigator.clipboard.writeText(path1);
 
     /* Alert the copied text */
-    // alert("Copied the link");
+    alert("Copied the link");
   }
 
   return (
@@ -69,8 +70,11 @@ export default function GetYearFiles({ year , files }) {
                               <td className="text-center">{value.title}</td>
                               <td className="text-center">{value.description}</td>
                               <td className="text-center">{value.departments}</td>
-                              <td className="text-center"><a href={path1} className="link-primary" target = "_blank"><u><button >open</button></u></a>
-                              {/* <button onClick={copyLink(path1)} >Copy Link</button> */}
+                              <td className="text-center">
+                              <a href={path1} className="link-primary" target = "_blank"><button >open</button>
+                              </a>
+                              {" "}
+                              <button onClick={copyLink(path1)} >Copy Link</button>
                               </td>
                             </tr>
                           )

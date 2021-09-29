@@ -15,7 +15,7 @@ export default function RecentFile() {
         // console.log(response.data.my_path);
         let path = response.data.file_path;
         let path1 = path.replace(/\\/g, "/");
-        // console.log(path1);
+        console.log(path1);
         setLink(STATIC_API + "/" + path1);
         // console.log(link);
         settitle(response.data.title);

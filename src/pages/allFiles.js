@@ -4,13 +4,17 @@ import GetYearFiles from '../components/GetYearFiles';
 import { API, STATIC_API } from '../constants/extras';
 
 
-export default function AllFiles() {
+export default function AllFiles(props) {
 
   const [values, setvalues] = useState([]);
   const [year, setyear] = useState("");
 
   const preload = () => {
-    axios.get(`${API}/getAllFiles`)
+    axios.get(`${API}/getAllFiles`,
+    {headers: {
+      'Authorization': `Bearer ${props.token}`,
+    }}
+    )
     .then((response) => {
       setvalues(response.data);
       console.log(response.data);
@@ -62,42 +66,6 @@ export default function AllFiles() {
           
         </div>
 
-
-
-
-        {/* <div className="col-sm-10 offset-1">
-
-          <h2 className="fw-bold"> All Uploaded Documents </h2>
-          <hr className="divider bg-madison" />
-
-          <div>
-
-          </div>
-
-          { values.map((val, index) => {
-            let path = val.file_path;
-            let path1 = path.replace(/\\/g, "/");
-            path1 = STATIC_API + "/" + path1;
-
-            return(
-              <div>
-                <h3 className="fw-bold">Title : {val.title}</h3>
-
-                <h4 className="fw"> Description : {val.description} </h4>
-
-                <h4 className="fw"> Departments : {val.departments} </h4>
-
-                <h4 className="fw"><a href={path1} target = "_blank">open file</a></h4>
-
-                <hr className="divider bg-madison" />
-                <br></br>
-              </div>
-            )
-          }
-            
-          )}
-
-        </div> */}
       </div>
     </section>
   )

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import NotificationForm from "../components/NotificationForm";
 import Login from "../components/Login";
 import { useSelector, useDispatch } from "react-redux";
+import FileUploadForm from "./uploads";
 
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -18,6 +19,9 @@ import RightsForm from "../components/RightsForm";
 import EditorForm from "../containers/EditorForm";
 import PageEditorComponent from "../components/PageEditorComponent";
 import NewPageForm from "../components/NewPageForm";
+import PlacementForm from "../components/PlacementForm";
+import AllUploadedFiles from "./allFiles"
+
 
 // Add other forms and route using react-router-dom
 
@@ -161,6 +165,36 @@ export default function Forms() {
                   Editor Form
                 </MenuItem>
               )}
+              {authDetails.user && (
+                <MenuItem
+                  onClick={() => {
+                    setPresentTab("FileUploadForm");
+                    handleClose();
+                  }}
+                >
+                  Upload File
+                </MenuItem>
+              )}
+              {authDetails.user && (
+                <MenuItem
+                  onClick={() => {
+                    setPresentTab("PlacementForm");
+                    handleClose();
+                  }}
+                >
+                  Placement Form
+                </MenuItem>
+              )}
+              {authDetails.user && (
+                <MenuItem
+                  onClick={() => {
+                    setPresentTab("AllUploadedFiles");
+                    handleClose();
+                  }}
+                >
+                  All Uploaded Files
+                </MenuItem>
+              )}
             </Menu>
             <Typography variant="h6" className={classes.title}>
               Portal for Website
@@ -245,12 +279,28 @@ export default function Forms() {
           token={authDetails.token}
         />
       )}
+
       {presentTab === "NewPageForm" && (
         <NewPageForm
           handleTab={handlePresentTab}
           addAlert={addAlert}
           token={authDetails.token}
         />
+      )}
+      {presentTab === "FileUploadForm" && (
+        <div>
+          <FileUploadForm addAlert={addAlert} token={authDetails.token}/>
+        </div>
+      )}
+      {presentTab === "PlacementForm" && (
+        <div>
+          <PlacementForm addAlert={addAlert} token={authDetails.token}/>
+        </div>
+      )}
+      {presentTab === "AllUploadedFiles" && (
+        <div>
+          <AllUploadedFiles addAlert={addAlert} token={authDetails.token}/>
+        </div>
       )}
     </React.Fragment>
   );
