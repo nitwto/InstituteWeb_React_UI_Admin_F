@@ -313,13 +313,26 @@
 // export default Uploads;
 
 import React, { useState , useEffect} from 'react';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import { Autocomplete } from '@material-ui/core'
 import axios from 'axios';
 
 import { DEPARTMENTS , API} from "../constants/extras";
 
+import {
+  FormControl,
+  Input,
+  InputLabel,
+  FormHelperText,
+  FormControlLabel,
+  Checkbox,
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+} from "@material-ui/core/";
+
 function Uploads(props) {
+  let initial = new FormData();
   const [values, setValues] = useState({
     title: "",
     description: "",
@@ -329,7 +342,7 @@ function Uploads(props) {
     error: "",
     uploadedFile: "",
     // getaRedirect: false,
-    formData: ""
+    formData: initial
   });
 
   const {
@@ -351,7 +364,7 @@ function Uploads(props) {
     preload();
   }, []);
 
-  const onSubmit = event => {
+  const onSubmit = (event) => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
 
@@ -378,17 +391,22 @@ function Uploads(props) {
         error: "",
         loading: false,
         uploadedFile: data.data.title
-      });
+      })
+      
       
     })
     
   };
 
-  const handleChange = name => event => {
-    const value = name === "file" ? event.target.files[0] : event.target.value;
+  const handleChange = (event, name) => {
+    let value = "";
+    if(name == "file") {
+      value = event.target.files[0];
+    }
+    else {
+      value = event.target.value;
+    }
     formData.set(name, value);
-    // console.log(value);
-    // console.log(event);
     setValues({ ...values, [name]: value });
     
     if(!title || !description || !departments || !file){
@@ -437,106 +455,126 @@ function Uploads(props) {
     </div>
   );
 
+  const styles = {
+    margin: "10px",
+    width: "300px",
+  };
 
   return (
-      <section className="section section-lg bg-default">
-        <div className="container">
-          <div className="row justify-content-sm-center">
-            <div className="col-sm-10 col-xl-8">
-              <h2 className="fw-bold">File Upload Form</h2>
+    <React.Fragment>
 
-              <hr className="divider bg-madison" />
-              <div className="offset-md-top-50 offset-top-40">
-                <form className="rd-mailform text-start">
-                  
-                  {loadingMessage()}
-                  {errorMessage()}
-                  {successMessage()}
-                  {viewFileMessage()}
+      <div>
+        <h2>File Upload Form</h2>
 
-                  <div className="row row-12">
-                    
-                    <div className="col-12">
-                      <div className="form-wrap">
-                        <label className="form-label form-label-outside" >Title</label>
-                        <input className="form-input" type="text" name="title" data-constraints="@Required" value={title}
-                          placeholder="Enter title"
-                          onChange={handleChange("title")} />
-                      </div>
-                    </div>
-                    <div className="col-12">
-                      <div className="form-wrap">
-                        <label className="form-label form-label-outside" htmlFor="contact-us-message">Description</label>
-                        <textarea className="form-input" name="description" data-constraints="@Required" value={description}
-                          placeholder="Enter description"
-                          onChange={handleChange("description")} />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row justify-content-sm-center">
-                    <div className="col-6">
+        <h4>{errorMessage()}</h4>
+        <h4>{successMessage()}</h4>
+        <h4>{viewFileMessage()}</h4>
+        <h4>{loadingMessage()}</h4>
 
-                      <label className="btn ">
-                        <input
-                          onChange={handleChange("file")}
-                          type="file"
-                          name="file"
-                          multiple
-                          required
-                          placeholder="choose a file"
-                        />
-                      </label>
+      </div>
+      
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            flexDirection: "column",
+            alignContent: "center",
+            justifyContent: "center"
+          }}
+        >
+    
+          <FormControl fullWidth={true} style={styles} required>
+            <InputLabel >{"Title"}</InputLabel>
+            <Input
+              id={"title"}
+              value={title}
+              onChange={ (obj) => handleChange(obj, "title") }
+            />
+          </FormControl>
 
-                    </div>
-                    <div className="col-6">
+          <FormControl fullWidth={true} style={styles} required>
+            <InputLabel >{"Description"}</InputLabel>
+            <Input
+              id={"description"}
+              value={description}
+              onChange={ (obj) => handleChange(obj, "description") }
+            />
+          </FormControl>
+        </div>
 
-                      {values.file && (
-                        <img src={URL.createObjectURL(file)} alt="preview not available for this file type" />
-                      )}
-
-                      {/* {values.file && [...values.file].map(
-                        (f) => (
-                          <img src={URL.createObjectURL(f)} />
-                        )
-                      )} */}
-
-                      </div>
-                    </div>
-
-                    <br></br>
-                    <Autocomplete
-                      className="form-wrap"
-                      options={DEPARTMENTS}
-                      multiple
-                      style={{width: 500}}
-                      // defaultValue={[DEPARTMENTS[0]]}
-                      onChange={(event, value) => {
-                        formData.set('departments',value);
-                  
-                        setValues({ ...values, departments: value })
-                      }}
-                      getOptionLabel={(option) => option}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label="Choose Departments"
-                          variant="standard"
-                          placeholder="Departments"
-                          
-                        />
-                      )}
-                    />
-
-                  <div className="offset-top-20 text-center text-md-start">
-                    <button className="btn btn-primary" onClick={onSubmit} type="submit">Submit</button>
-                  </div>
-
-                </form>
-              </div>
+        <div style={{
+            display: "flex",
+            flexWrap: "wrap",
+            flexDirection: "column",
+            alignContent: "center",
+            justifyContent: "center"
+        }}>
+          <div className="row">
+          <div className="col-6 offset-3">
+            <label className="btn ">
+              <input
+                onChange={(obj) => handleChange(obj, "file")}
+                type="file"
+                name="file"
+                multiple
+                required
+                placeholder="choose a file"
+              />
+            </label>
+            
+            {values.file && (
+              <img src={URL.createObjectURL(file)} alt="preview not available for this file type" />
+            )}
             </div>
           </div>
         </div>
-      </section>
+          
+          <br></br>
+          <div style={{
+            display: "flex",
+            flexWrap: "wrap",
+            flexDirection: "column",
+            alignContent: "center",
+            justifyContent: "center"
+        }} >
+          
+            <Autocomplete
+              className="form-wrap"
+              options={DEPARTMENTS}
+              multiple
+              style={styles}
+              // defaultValue={[DEPARTMENTS[0]]}
+              onChange={(event, value) => {
+                formData.set('departments',value);
+                
+                setValues({ ...values, departments: value })
+              }}
+              getOptionLabel={(option) => option}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Choose Departments"
+                  variant="standard"
+                  placeholder="Departments"
+                  
+                />
+              )}
+            />
+          </div>
+        
+        <br></br>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            style={{ marginLeft: "10px" }}
+            variant="contained"
+            color="primary"
+            onClick={ (event) => onSubmit(event)}
+          >
+            Submit
+          </Button>
+        </div>
+
+      </React.Fragment>
 
   );
 
