@@ -212,7 +212,7 @@ function PlacementForm(props) {
           alignContent: "center",
         }}
       >
-
+        
         <FormControl variant="filled" fullWidth={true} style={styles} required>
           <InputLabel id="demo-simple-select-label">Course</InputLabel>
           <Select

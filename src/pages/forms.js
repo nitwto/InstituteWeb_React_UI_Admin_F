@@ -21,6 +21,7 @@ import PageEditorComponent from "../components/PageEditorComponent";
 import NewPageForm from "../components/NewPageForm";
 import PlacementForm from "../components/PlacementForm";
 import AllUploadedFiles from "./allFiles"
+import CreatePageWithJSON from "../components/CreatePageWithJSON";
 
 
 // Add other forms and route using react-router-dom
@@ -195,6 +196,16 @@ export default function Forms() {
                   All Uploaded Files
                 </MenuItem>
               )}
+              {authDetails.user && (
+                <MenuItem
+                  onClick={() => {
+                    setPresentTab("CreatePageWithJSON");
+                    handleClose();
+                  }}
+                >
+                  Create Page With JSON
+                </MenuItem>
+              )}
             </Menu>
             <Typography variant="h6" className={classes.title}>
               Portal for Website
@@ -300,6 +311,11 @@ export default function Forms() {
       {presentTab === "AllUploadedFiles" && (
         <div>
           <AllUploadedFiles addAlert={addAlert} token={authDetails.token}/>
+        </div>
+      )}
+      {presentTab === "CreatePageWithJSON" && (
+        <div>
+          <CreatePageWithJSON addAlert={addAlert} token={authDetails.token}/>
         </div>
       )}
     </React.Fragment>

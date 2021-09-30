@@ -121,3 +121,26 @@ export const placementschema = {
     required: true,
   },
 }
+
+export const pageschema = {
+  title: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  path: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  url: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  json: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+}
