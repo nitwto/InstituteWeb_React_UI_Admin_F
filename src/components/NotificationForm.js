@@ -1,5 +1,5 @@
 import "../styles/App.css";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { notificationSchema } from "../constants/schemas";
 import { getInitialState } from "../util/formHelpers";
 import { useSelector } from "react-redux";
@@ -24,9 +24,13 @@ import { DEPARTMENTS } from "../constants/extras";
 import AlertComponent from "./AlertComponent";
 
 function NotificationForm(props) {
+  const [newNotification, setNewNotification] = useState(true);
   const [notificationDetails, setNotificaitonDetails] = useState(
     getInitialState(notificationSchema)
   );
+  const [updateDepartment, setUpdateDepartment] = useState(null);
+  const [updateTitle, setUpdateTitle] = useState(null);
+  const [allNotifications, setAllNotifications] = useState([]);
   const [zeroSubmission, setZeroSubmission] = useState(true);
   const [focus, setFocus] = useState(false);
 
@@ -36,15 +40,87 @@ function NotificationForm(props) {
   const contentTypeRef = useRef(null);
   const urlRef = useRef(null);
 
+  const { token, addAlert } = props;
+
   const styles = {
     margin: "10px",
     width: "300px",
   };
 
+  useEffect(() => {
+    async function fetchAllNotifApi() {
+      const requestOptions = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await fetch(
+        "http:///insti-web-backend.herokuapp.com/api/notification/getall",
+        requestOptions
+      );
+      if (!response) {
+        addAlert(
+          <AlertComponent
+            type="error"
+            text="There are some issues to be encountered. Please try again later."
+          />
+        );
+        return;
+      }
+      const data = await response.json();
+      setAllNotifications(data);
+    }
+
+    async function fetchDeptNotifApi() {
+      console.log("yo");
+      const requestOptions = {
+        headers: {
+          method: "POST",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ department: updateDepartment }),
+      };
+      const response = await fetch(
+        "http:///insti-web-backend.herokuapp.com/api/notification/dept",
+        requestOptions
+      );
+      if (!response) {
+        addAlert(
+          <AlertComponent
+            type="error"
+            text="There are some issues to be encountered. Please try again later."
+          />
+        );
+        return;
+      }
+      const data = await response.json();
+      setAllNotifications(data);
+    }
+
+    if (updateDepartment !== null) {
+      if (updateDepartment === "All") {
+        fetchAllNotifApi();
+      } else {
+        fetchDeptNotifApi();
+      }
+    }
+  }, [updateDepartment, token, addAlert]);
+
   const resetAll = () => {
     setNotificaitonDetails(getInitialState(notificationSchema));
     setFocus(false);
     setZeroSubmission(true);
+    setUpdateDepartment(null);
+    setUpdateTitle(null);
+    setAllNotifications([]);
+  };
+
+  const toggleNewNotification = (event) => {
+    setNewNotification((prevState) => {
+      return !prevState;
+    });
   };
 
   const focusElement = (formFields) => {
@@ -136,6 +212,15 @@ function NotificationForm(props) {
   };
 
   const setValue = (field, value) => {
+    if (field === "updateDepartment") {
+      setUpdateDepartment(value);
+      return;
+    }
+    if (field === "updateTitle") {
+      setUpdateTitle(value);
+      setNotificaitonDetails(value);
+      return;
+    }
     setNotificaitonDetails((prevState) => {
       let newState = { ...prevState };
       newState[field] = value;
@@ -155,7 +240,6 @@ function NotificationForm(props) {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (isCorrect(notificationSchema, notificationDetails)) {
-      console.log(`Bearer ${props.token}`);
       const requestOptions = {
         method: "POST",
         headers: {
@@ -164,209 +248,321 @@ function NotificationForm(props) {
         },
         body: JSON.stringify(notificationDetails),
       };
-      const response = await fetch(
-        "http:///insti-web-backend.herokuapp.com/api/notification/add",
-        requestOptions
-      );
-      if (!response) {
+      var data;
+      if(newNotification){
+        const response = await fetch(
+          "http:///insti-web-backend.herokuapp.com/api/notification/add",
+          requestOptions
+        );
+        if (!response) {
+          props.addAlert(
+            <AlertComponent
+              type="error"
+              text="The notification wasn't added. Please try later."
+            />
+          );
+          return;
+        }
+        data = await response.json();
+      } else {
+        const response = await fetch(
+          "http:///insti-web-backend.herokuapp.com/api/notification/put",
+          requestOptions
+        );
+        if (!response) {
+          props.addAlert(
+            <AlertComponent
+              type="error"
+              text="The notification wasn't added. Please try later."
+            />
+          );
+          return;
+        }
+        data = await response.json();
+      }
+      
+      if (data.err) {
+        props.addAlert(<AlertComponent type="error" text={data.err} />);
+      } else {
         props.addAlert(
           <AlertComponent
-            type="error"
-            text="The notification wasn't added. Please try later."
+            type="success"
+            text={ newNotification ? "The notification has been added to the website." : "The notification has beed updated." }
           />
         );
-        return;
+        resetAll();
       }
-      const data = await response.json();
-      console.log(data);
-      props.addAlert(
-        <AlertComponent
-          type="success"
-          text="The notification has been added to the website."
-        />
-      );
-      resetAll();
     } else {
       setZeroSubmission(false);
       setFocus(true);
     }
   };
 
-  // useEffect(() => {
-  //   titleRef.current.focus();
-  // }, []);
+  const getInitialUpdateForm = () => {
+    console.log(updateTitle);
+    if (!newNotification)
+      return (
+        <div style={{ display: "flex", justifyContent: "space-around" }}>
+          <FormControl
+            variant="filled"
+            fullWidth={true}
+            style={styles}
+            required
+          >
+            <InputLabel id="dept-select-label">Department</InputLabel>
+            <Select
+              labelId="dept-select-label"
+              id="updateDepartment"
+              name="updateDepartment"
+              value={updateDepartment}
+              onChange={(obj) => onChangeHandler(obj, String)}
+            >
+              {DEPARTMENTS.map((department) => {
+                return <MenuItem value={department}>{department}</MenuItem>;
+              })}
+            </Select>
+          </FormControl>
+          <FormControl
+            variant="filled"
+            fullWidth={true}
+            style={styles}
+            required
+          >
+            <InputLabel id="title-select-label">Title</InputLabel>
+            <Select
+              labelId="title-select-label"
+              id="updateTitle"
+              name="updateTitle"
+              value={updateTitle}
+              onChange={(obj) => onChangeHandler(obj, String)}
+            >
+              {allNotifications.map((notification) => {
+                return (
+                  <MenuItem value={notification}>{notification.title}</MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        </div>
+      );
+  };
+
+  const getTheForm = () => {
+    if (newNotification || updateTitle !== null)
+      return (
+        <div>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              flexDirection: "column",
+              alignContent: "center",
+            }}
+          >
+            <FormControl fullWidth={true} style={styles} required>
+              <InputLabel htmlFor={"title"}>{"title"}</InputLabel>
+              <Input
+                id={"title"}
+                aria-describedby="my-helper-text"
+                value={notificationDetails["title"]}
+                onChange={(obj) => onChangeHandler(obj, String)}
+                error={errorFields["title"].error}
+                inputRef={titleRef}
+              />
+              <FormHelperText id="my-helper-text">
+                {errorFields["title"].formHelperText}
+              </FormHelperText>
+            </FormControl>
+            <FormControl fullWidth={true} style={styles} required>
+              <InputLabel htmlFor={"summary"}>{"summary"}</InputLabel>
+              <Input
+                id={"summary"}
+                aria-describedby="my-helper-text"
+                value={notificationDetails["summary"]}
+                onChange={(obj) => onChangeHandler(obj, String)}
+                error={errorFields["summary"].error}
+                inputRef={summaryRef}
+              />
+              <FormHelperText id="my-helper-text">
+                {errorFields["summary"].formHelperText}
+              </FormHelperText>
+            </FormControl>
+            <FormControl
+              variant="filled"
+              fullWidth={true}
+              style={styles}
+              required
+            >
+              <InputLabel id={"contentTypeLabel"}>{"Content Type"}</InputLabel>
+              <Select
+                labelId="contentTypeLabel"
+                id="contentType"
+                name="contentType"
+                value={notificationDetails["contentType"]}
+                onChange={(obj) => onChangeHandler(obj, String)}
+                error={errorFields["contentType"].error}
+              >
+                <MenuItem value={"announcements_news_notices"}>
+                  {"announcements_news_notices"}
+                </MenuItem>
+                <MenuItem value={"jobs_tenders"}>{"jobs_tenders"}</MenuItem>
+                <MenuItem value={"workshops_conferences"}>
+                  {"workshops_conferences"}
+                </MenuItem>
+              </Select>
+              <FormHelperText id="my-helper-text">
+                {errorFields["contentType"].formHelperText}
+              </FormHelperText>
+            </FormControl>
+            <FormControl fullWidth={true} style={styles} required>
+              <InputLabel htmlFor={"description"}>{"description"}</InputLabel>
+              <Input
+                id={"description"}
+                aria-describedby="my-helper-text"
+                value={notificationDetails["description"]}
+                onChange={(obj) => onChangeHandler(obj, String)}
+                error={errorFields["description"].error}
+                inputRef={descriptionRef}
+              />
+              <FormHelperText id="my-helper-text">
+                {errorFields["description"].formHelperText}
+              </FormHelperText>
+            </FormControl>
+            <FormControl
+              variant="filled"
+              fullWidth={true}
+              style={styles}
+              required
+            >
+              <InputLabel id="demo-simple-select-label">Department</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="department"
+                name="department"
+                value={notificationDetails["department"]}
+                onChange={(obj) => onChangeHandler(obj, String)}
+                error={errorFields["department"].error}
+              >
+                {DEPARTMENTS.map((department) => {
+                  return <MenuItem value={department}>{department}</MenuItem>;
+                })}
+              </Select>
+              <FormHelperText id="my-helper-text">
+                {errorFields["department"].formHelperText}
+              </FormHelperText>
+            </FormControl>
+            <FormControl fullWidth={true} style={styles}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    value={notificationDetails["is_published"]}
+                    onChange={(obj) => onChangeHandler(obj, Boolean)}
+                    id={"is_published"}
+                  />
+                }
+                label={"is_published"}
+              />
+            </FormControl>
+            <FormControl fullWidth={true} style={styles}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    value={notificationDetails["is_breaking_news"]}
+                    onChange={(obj) => onChangeHandler(obj, Boolean)}
+                    id={"is_breaking_news"}
+                  />
+                }
+                label={"is_breaking_news"}
+              />
+            </FormControl>
+            <FormControl fullWidth={true} style={styles} required>
+              <InputLabel htmlFor={"url"}>{"url"}</InputLabel>
+              <Input
+                id={"url"}
+                aria-describedby="my-helper-text"
+                value={notificationDetails["url"]}
+                onChange={(obj) => onChangeHandler(obj, String)}
+                error={errorFields["url"].error}
+                inputRef={urlRef}
+              />
+              <FormHelperText id="my-helper-text">
+                {errorFields["url"].formHelperText}
+              </FormHelperText>
+            </FormControl>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label={"Start Date"}
+                value={notificationDetails["start_date"]}
+                onChange={(date) => setValue("start_date", date)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    style={styles}
+                    error={errorFields["start_date"].error}
+                  />
+                )}
+              />
+            </LocalizationProvider>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label={"End Date"}
+                value={notificationDetails["end_date"]}
+                onChange={(date) => setValue("end_date", date)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    style={styles}
+                    error={errorFields["end_date"].error}
+                  />
+                )}
+              />
+            </LocalizationProvider>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginBottom: "10px",
+            }}
+          >
+            <Button
+              style={{ marginLeft: "10px" }}
+              variant="contained"
+              color="primary"
+              onClick={submitHandler}
+            >
+              Submit
+            </Button>
+            <Button
+              style={{ marginLeft: "10px" }}
+              variant="contained"
+              color="secondary"
+              onClick={resetAll}
+            >
+              Reset
+            </Button>
+          </div>
+        </div>
+      );
+    else {
+      return <div></div>;
+    }
+  };
+
   const errorFields = getFormFields();
   return (
     <React.Fragment>
       <div>
         <h2>Notification Form</h2>
       </div>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          flexDirection: "column",
-          alignContent: "center",
-        }}
-      >
-        <FormControl fullWidth={true} style={styles} required>
-          <InputLabel htmlFor={"title"}>{"title"}</InputLabel>
-          <Input
-            id={"title"}
-            aria-describedby="my-helper-text"
-            value={notificationDetails["title"]}
-            onChange={(obj) => onChangeHandler(obj, String)}
-            error={errorFields["title"].error}
-            inputRef={titleRef}
-          />
-          <FormHelperText id="my-helper-text">
-            {errorFields["title"].formHelperText}
-          </FormHelperText>
-        </FormControl>
-        <FormControl fullWidth={true} style={styles} required>
-          <InputLabel htmlFor={"summary"}>{"summary"}</InputLabel>
-          <Input
-            id={"summary"}
-            aria-describedby="my-helper-text"
-            value={notificationDetails["summary"]}
-            onChange={(obj) => onChangeHandler(obj, String)}
-            error={errorFields["summary"].error}
-            inputRef={summaryRef}
-          />
-          <FormHelperText id="my-helper-text">
-            {errorFields["summary"].formHelperText}
-          </FormHelperText>
-        </FormControl>
-        <FormControl fullWidth={true} style={styles} required>
-          <InputLabel htmlFor={"contentType"}>{"contentType"}</InputLabel>
-          <Input
-            id={"contentType"}
-            aria-describedby="my-helper-text"
-            value={notificationDetails["contentType"]}
-            onChange={(obj) => onChangeHandler(obj, String)}
-            error={errorFields["contentType"].error}
-            inputRef={contentTypeRef}
-          />
-          <FormHelperText id="my-helper-text">
-            {errorFields["contentType"].formHelperText}
-          </FormHelperText>
-        </FormControl>
-        <FormControl fullWidth={true} style={styles} required>
-          <InputLabel htmlFor={"description"}>{"description"}</InputLabel>
-          <Input
-            id={"description"}
-            aria-describedby="my-helper-text"
-            value={notificationDetails["description"]}
-            onChange={(obj) => onChangeHandler(obj, String)}
-            error={errorFields["description"].error}
-            inputRef={descriptionRef}
-          />
-          <FormHelperText id="my-helper-text">
-            {errorFields["description"].formHelperText}
-          </FormHelperText>
-        </FormControl>
-        <FormControl variant="filled" fullWidth={true} style={styles} required>
-          <InputLabel id="demo-simple-select-label">Department</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="department"
-            name="department"
-            value={notificationDetails["department"]}
-            onChange={(obj) => onChangeHandler(obj, String)}
-            error={errorFields["department"].error}
-          >
-            {DEPARTMENTS.map((department) => {
-              return <MenuItem value={department}>{department}</MenuItem>;
-            })}
-          </Select>
-          <FormHelperText id="my-helper-text">
-            {errorFields["department"].formHelperText}
-          </FormHelperText>
-        </FormControl>
-        <FormControl fullWidth={true} style={styles}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                value={notificationDetails["is_published"]}
-                onChange={(obj) => onChangeHandler(obj, Boolean)}
-                id={"is_published"}
-              />
-            }
-            label={"is_published"}
-          />
-        </FormControl>
-        <FormControl fullWidth={true} style={styles}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                value={notificationDetails["is_breaking_news"]}
-                onChange={(obj) => onChangeHandler(obj, Boolean)}
-                id={"is_breaking_news"}
-              />
-            }
-            label={"is_breaking_news"}
-          />
-        </FormControl>
-        <FormControl fullWidth={true} style={styles} required>
-          <InputLabel htmlFor={"url"}>{"url"}</InputLabel>
-          <Input
-            id={"url"}
-            aria-describedby="my-helper-text"
-            value={notificationDetails["url"]}
-            onChange={(obj) => onChangeHandler(obj, String)}
-            error={errorFields["url"].error}
-            inputRef={urlRef}
-          />
-          <FormHelperText id="my-helper-text">
-            {errorFields["url"].formHelperText}
-          </FormHelperText>
-        </FormControl>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            label={"Start Date"}
-            value={notificationDetails["start_date"]}
-            onChange={(date) => setValue("start_date", date)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                style={styles}
-                error={errorFields["start_date"].error}
-              />
-            )}
-          />
-        </LocalizationProvider>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            label={"End Date"}
-            value={notificationDetails["end_date"]}
-            onChange={(date) => setValue("end_date", date)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                style={styles}
-                error={errorFields["end_date"].error}
-              />
-            )}
-          />
-        </LocalizationProvider>
-      </div>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <Button
-          style={{ marginLeft: "10px" }}
-          variant="contained"
-          color="primary"
-          onClick={submitHandler}
-        >
-          Submit
+      <div style={{ margin: "10px" }}>
+        <Button onClick={toggleNewNotification}>
+          {newNotification
+            ? "Update an existing notification"
+            : "Create a new Notification"}
         </Button>
-        <Button
-          style={{ marginLeft: "10px" }}
-          variant="contained"
-          color="secondary"
-          onClick={resetAll}
-        >
-          Reset
-        </Button>
+        {getInitialUpdateForm()}
+        {getTheForm()}
       </div>
     </React.Fragment>
   );

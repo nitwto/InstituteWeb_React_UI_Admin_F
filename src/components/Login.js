@@ -248,6 +248,7 @@ export default function Login(props) {
         <FormControl fullWidth={true} style={styles} required>
           <InputLabel htmlFor={"password"}>{"Password"}</InputLabel>
           <Input
+            type="password"
             id={"password"}
             aria-describedby="my-helper-text"
             value={password}
