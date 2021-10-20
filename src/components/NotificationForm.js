@@ -20,7 +20,7 @@ import { DatePicker, LocalizationProvider } from "@material-ui/lab";
 import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 
 import { isCorrect } from "../util/formHelpers";
-import { DEPARTMENTS } from "../constants/extras";
+import { API, DEPARTMENTS } from "../constants/extras";
 import AlertComponent from "./AlertComponent";
 
 function NotificationForm(props) {
