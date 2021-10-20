@@ -114,16 +114,6 @@ function Uploads(props) {
     }
   };
 
-  const successMessage = () => (
-    <div
-      className="alert alert-success mt-3"
-      style={{ display: uploadedFile ? "" : "none" }}
-    >
-      <h4>{uploadedFile} Uploaded successfully</h4>
-
-    </div>
-  );
-
   const viewFileMessage = () => (
     <div
       className="alert alert-info mt-3"
@@ -131,15 +121,6 @@ function Uploads(props) {
     >
       <h4> <a href="/recent-upload" target = "_blank">View Uploaded File</a> </h4>
 
-    </div>
-  );
-
-  const errorMessage = () => (
-    <div
-      className="alert alert-danger mt-3"
-      style={{ display: error!=="" ? "" : "none" }}
-    >
-      <h4>{error}</h4>
     </div>
   );
 
