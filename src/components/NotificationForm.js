@@ -239,7 +239,7 @@ function NotificationForm(props) {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (isCorrect(notificationSchema, notificationDetails)) {
-      const requestOptions = {
+      var requestOptions = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -264,15 +264,16 @@ function NotificationForm(props) {
         }
         data = await response.json();
       } else {
+        requestOptions.method = "PUT";
         const response = await fetch(
-          `${API}/notification/put`,
+          `http://insti-web-backend.herokuapp.com/api/notification/update/${notificationDetails._id}`,
           requestOptions
         );
         if (!response) {
           props.addAlert(
             <AlertComponent
               type="error"
-              text="The notification wasn't added. Please try later."
+              text="The notification wasn't updated. Please try later."
             />
           );
           return;
