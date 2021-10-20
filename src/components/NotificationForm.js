@@ -20,7 +20,7 @@ import { DatePicker, LocalizationProvider } from "@material-ui/lab";
 import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 
 import { isCorrect } from "../util/formHelpers";
-import { DEPARTMENTS } from "../constants/extras";
+import { API, DEPARTMENTS } from "../constants/extras";
 import AlertComponent from "./AlertComponent";
 
 function NotificationForm(props) {
@@ -56,7 +56,7 @@ function NotificationForm(props) {
         },
       };
       const response = await fetch(
-        "http:///insti-web-backend.herokuapp.com/api/notification/getall",
+        `${API}/notification/getall`,
         requestOptions
       );
       if (!response) {
@@ -83,7 +83,7 @@ function NotificationForm(props) {
         body: JSON.stringify({ department: updateDepartment }),
       };
       const response = await fetch(
-        "http:///insti-web-backend.herokuapp.com/api/notification/dept",
+        `${API}/notification/dept`,
         requestOptions
       );
       if (!response) {
@@ -251,7 +251,7 @@ function NotificationForm(props) {
       var data;
       if(newNotification){
         const response = await fetch(
-          "http:///insti-web-backend.herokuapp.com/api/notification/add",
+          `${API}/notification/add`,
           requestOptions
         );
         if (!response) {
@@ -266,7 +266,7 @@ function NotificationForm(props) {
         data = await response.json();
       } else {
         const response = await fetch(
-          "http:///insti-web-backend.herokuapp.com/api/notification/put",
+          `${API}/notification/put`,
           requestOptions
         );
         if (!response) {

@@ -12,7 +12,8 @@ import {
   Link,
 } from "@material-ui/core/";
 import AlertComponent from "./AlertComponent";
- 
+import { API } from "../constants/extras";
+
 export default function Login(props) {
   const [signUp, setSignUp] = useState(false);
   const [userName, setUserName] = useState("");
@@ -131,7 +132,7 @@ export default function Login(props) {
           }),
         };
         const response = await fetch(
-          "http:///insti-web-backend.herokuapp.com/api/signup",
+          `${API}/signup`,
           requestOptions
         );
         if (!response) {
@@ -161,7 +162,7 @@ export default function Login(props) {
           }),
         };
         const response = await fetch(
-          "http:///insti-web-backend.herokuapp.com/api/signin",
+          `${API}/signin`,
           requestOptions
         );
         if (!response) {
