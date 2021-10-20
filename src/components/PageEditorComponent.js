@@ -3,6 +3,7 @@ import EditorJS from "@editorjs/editorjs";
 import { tools } from "../constants/toolsForEditor";
 import { Button } from "@material-ui/core";
 import AlertComponent from "./AlertComponent";
+import { API } from "../constants/extras";
 
 export default function PageEditorComponent(props) {
   const [pageJson] = useState({"blocks": props.pageDetails.blocks});
@@ -18,11 +19,11 @@ export default function PageEditorComponent(props) {
   const onSaveHandler = async (outputData) => {
 
 		let method = "PUT";
-		let api = "http:///insti-web-backend.herokuapp.com/api/page/update";
+		let api = `${API}/page/update`;
 		let successMessage = "The page has been updated successfully.";
 		if(props.newPage){
 			method = "POST";
-			api = "http:///insti-web-backend.herokuapp.com/api/page/add";
+			api = `${API}/page/add`;
 			successMessage = "New page has been added successfully";
 		}
 
