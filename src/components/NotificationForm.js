@@ -2,7 +2,6 @@ import "../styles/App.css";
 import React, { useState, useRef, useEffect } from "react";
 import { notificationSchema } from "../constants/schemas";
 import { getInitialState } from "../util/formHelpers";
-import { useSelector } from "react-redux";
 
 import {
   FormControl,
