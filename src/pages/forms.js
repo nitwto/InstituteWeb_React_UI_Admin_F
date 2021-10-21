@@ -22,6 +22,7 @@ import NewPageForm from "../components/NewPageForm";
 import PlacementForm from "../components/PlacementForm";
 import AllUploadedFiles from "./allFiles"
 import CreatePageWithJSON from "../components/CreatePageWithJSON";
+import RecentFile from '../pages/recentFile'
 
 
 // Add other forms and route using react-router-dom
@@ -300,7 +301,7 @@ export default function Forms() {
       )}
       {presentTab === "FileUploadForm" && (
         <div>
-          <FileUploadForm addAlert={addAlert} token={authDetails.token}/>
+          <FileUploadForm addAlert={addAlert} token={authDetails.token} setPresentTab={setPresentTab}/>
         </div>
       )}
       {presentTab === "PlacementForm" && (
@@ -311,6 +312,10 @@ export default function Forms() {
       {presentTab === "AllUploadedFiles" && (
         <div>
           <AllUploadedFiles addAlert={addAlert} token={authDetails.token}/>
+        </div>
+      )}{presentTab === "RecentFile" && (
+        <div>
+          <RecentFile addAlert={addAlert} token={authDetails.token}/>
         </div>
       )}
       {presentTab === "CreatePageWithJSON" && (

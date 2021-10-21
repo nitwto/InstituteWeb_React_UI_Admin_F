@@ -64,6 +64,7 @@ function Uploads(props) {
           text={error}
         />
       );
+      
       return;
     }
 
@@ -84,6 +85,7 @@ function Uploads(props) {
         loading: false,
         uploadedFile: data.data.title
       })
+      props.setPresentTab("RecentFile");
       props.addAlert(
         <AlertComponent
           type="success"
