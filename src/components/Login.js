@@ -282,6 +282,7 @@ export default function Login(props) {
           }}
         >
           {signUp ? "Already a user. SignIn" : "Create a new account"}
+          {!signUp && "ChangePass"}
         </Link>
       </div>
     </React.Fragment>

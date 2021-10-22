@@ -200,6 +200,7 @@ export default function DropDownForm(props) {
                         type="outline"
                         href="#"
                         onClick={() => {
+                            props.shuffleForm();
                         }}
                     >
                         {"Add a new navigation button"}
