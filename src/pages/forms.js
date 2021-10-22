@@ -22,11 +22,8 @@ import NewPageForm from "../components/NewPageForm";
 import PlacementForm from "../components/PlacementForm";
 import AllUploadedFiles from "./allFiles"
 import CreatePageWithJSON from "../components/CreatePageWithJSON";
-<<<<<<< HEAD
 import NavigationForm from "../containers/NavigationForm";
-=======
 import RecentFile from '../pages/recentFile'
->>>>>>> 8933cfa8de66fa6d47986cb9fcfc06092c08aa70
 
 
 // Add other forms and route using react-router-dom
