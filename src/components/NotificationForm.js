@@ -318,7 +318,7 @@ function NotificationForm(props) {
               onChange={(obj) => onChangeHandler(obj, String)}
             >
               {DEPARTMENTS.map((department) => {
-                return <MenuItem value={department}>{department}</MenuItem>;
+                return <MenuItem value={department.value}>{department.title}</MenuItem>;
               })}
             </Select>
           </FormControl>
@@ -444,7 +444,7 @@ function NotificationForm(props) {
                 error={errorFields["department"].error}
               >
                 {DEPARTMENTS.map((department) => {
-                  return <MenuItem value={department}>{department}</MenuItem>;
+                  return <MenuItem value={department.value}>{department.title}</MenuItem>;
                 })}
               </Select>
               <FormHelperText id="my-helper-text">

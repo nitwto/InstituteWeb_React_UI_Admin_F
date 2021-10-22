@@ -22,7 +22,11 @@ import NewPageForm from "../components/NewPageForm";
 import PlacementForm from "../components/PlacementForm";
 import AllUploadedFiles from "./allFiles"
 import CreatePageWithJSON from "../components/CreatePageWithJSON";
+<<<<<<< HEAD
 import NavigationForm from "../containers/NavigationForm";
+=======
+import RecentFile from '../pages/recentFile'
+>>>>>>> 8933cfa8de66fa6d47986cb9fcfc06092c08aa70
 
 
 // Add other forms and route using react-router-dom
@@ -150,16 +154,6 @@ export default function Forms() {
               {authDetails.user && (
                 <MenuItem
                   onClick={() => {
-                    setPresentTab("NavigationForm");
-                    handleClose();
-                  }}
-                >
-                  Navigation Form
-                </MenuItem>
-              )}
-              {authDetails.user && (
-                <MenuItem
-                  onClick={() => {
                     setPresentTab("RightsForm");
                     handleClose();
                   }}
@@ -215,6 +209,16 @@ export default function Forms() {
                   }}
                 >
                   Create Page With JSON
+                </MenuItem>
+              )}
+              {authDetails.user && (
+                <MenuItem
+                  onClick={() => {
+                    setPresentTab("NavigationForm");
+                    handleClose();
+                  }}
+                >
+                  Navigation Form
                 </MenuItem>
               )}
             </Menu>
@@ -279,11 +283,6 @@ export default function Forms() {
           <NotificationForm addAlert={addAlert} token={authDetails.token} />
         </div>
       )}
-      {presentTab === "NavigationForm" && (
-        <div>
-          <NavigationForm addAlert={addAlert} token={authDetails.token} />
-        </div>
-      )}
       {presentTab === "Login" && (
         <Login handleTab={handlePresentTab} addAlert={addAlert} />
       )}
@@ -316,7 +315,7 @@ export default function Forms() {
       )}
       {presentTab === "FileUploadForm" && (
         <div>
-          <FileUploadForm addAlert={addAlert} token={authDetails.token}/>
+          <FileUploadForm addAlert={addAlert} token={authDetails.token} setPresentTab={setPresentTab}/>
         </div>
       )}
       {presentTab === "PlacementForm" && (
@@ -328,10 +327,19 @@ export default function Forms() {
         <div>
           <AllUploadedFiles addAlert={addAlert} token={authDetails.token}/>
         </div>
+      )}{presentTab === "RecentFile" && (
+        <div>
+          <RecentFile addAlert={addAlert} token={authDetails.token}/>
+        </div>
       )}
       {presentTab === "CreatePageWithJSON" && (
         <div>
           <CreatePageWithJSON addAlert={addAlert} token={authDetails.token}/>
+        </div>
+      )}
+      {presentTab === "NavigationForm" && (
+        <div>
+          <NavigationForm addAlert={addAlert} token={authDetails.token} />
         </div>
       )}
     </React.Fragment>

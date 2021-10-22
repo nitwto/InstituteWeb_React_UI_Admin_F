@@ -2,7 +2,7 @@ import React, { useState , useEffect} from 'react';
 import { Autocomplete } from '@material-ui/core'
 import axios from 'axios';
 
-import { DEPARTMENTS , API} from "../constants/extras";
+import { DEPARTMENTSNAMES , API} from "../constants/extras";
 import AlertComponent from "../components/AlertComponent";
 import {
   FormControl,
@@ -64,6 +64,7 @@ function Uploads(props) {
           text={error}
         />
       );
+      
       return;
     }
 
@@ -84,6 +85,7 @@ function Uploads(props) {
         loading: false,
         uploadedFile: data.data.title
       })
+      props.setPresentTab("RecentFile");
       props.addAlert(
         <AlertComponent
           type="success"
@@ -218,7 +220,7 @@ function Uploads(props) {
           
             <Autocomplete
               className="form-wrap"
-              options={DEPARTMENTS}
+              options={DEPARTMENTSNAMES}
               multiple
               style={styles}
               // defaultValue={[DEPARTMENTS[0]]}
