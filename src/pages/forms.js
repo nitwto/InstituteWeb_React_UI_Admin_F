@@ -22,6 +22,7 @@ import NewPageForm from "../components/NewPageForm";
 import PlacementForm from "../components/PlacementForm";
 import AllUploadedFiles from "./allFiles"
 import CreatePageWithJSON from "../components/CreatePageWithJSON";
+import NavigationForm from "../containers/NavigationForm";
 
 
 // Add other forms and route using react-router-dom
@@ -149,6 +150,16 @@ export default function Forms() {
               {authDetails.user && (
                 <MenuItem
                   onClick={() => {
+                    setPresentTab("NavigationForm");
+                    handleClose();
+                  }}
+                >
+                  Navigation Form
+                </MenuItem>
+              )}
+              {authDetails.user && (
+                <MenuItem
+                  onClick={() => {
                     setPresentTab("RightsForm");
                     handleClose();
                   }}
@@ -266,6 +277,11 @@ export default function Forms() {
       {presentTab === "NotificationForm" && (
         <div>
           <NotificationForm addAlert={addAlert} token={authDetails.token} />
+        </div>
+      )}
+      {presentTab === "NavigationForm" && (
+        <div>
+          <NavigationForm addAlert={addAlert} token={authDetails.token} />
         </div>
       )}
       {presentTab === "Login" && (

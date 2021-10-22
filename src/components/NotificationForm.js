@@ -455,7 +455,7 @@ function NotificationForm(props) {
               <FormControlLabel
                 control={
                   <Checkbox
-                    value={notificationDetails["is_published"]}
+                    checked={notificationDetails["is_published"]}
                     onChange={(obj) => onChangeHandler(obj, Boolean)}
                     id={"is_published"}
                   />
@@ -467,7 +467,7 @@ function NotificationForm(props) {
               <FormControlLabel
                 control={
                   <Checkbox
-                    value={notificationDetails["is_breaking_news"]}
+                    checked={notificationDetails["is_breaking_news"]}
                     onChange={(obj) => onChangeHandler(obj, Boolean)}
                     id={"is_breaking_news"}
                   />
