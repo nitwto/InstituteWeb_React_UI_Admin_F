@@ -36,10 +36,6 @@ function Uploads(props) {
     formData
   } = values;
 
-  const preload = () => {
-    setValues({ ...values, formData: new FormData() });
-  };
-  preload();
 
   const onSubmit = (event) => {
     event.preventDefault();

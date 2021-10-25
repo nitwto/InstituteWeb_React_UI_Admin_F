@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import GetYearFiles from '../components/GetYearFiles';
 import { API } from '../constants/extras';
 
@@ -9,20 +9,6 @@ export default function AllFiles(props) {
   const [values, setvalues] = useState([]);
   const [year, setyear] = useState("");
 
-  const preload = () => {
-    axios.get(`${API}/getAllFiles`,
-    {headers: {
-      'Authorization': `Bearer ${props.token}`,
-    }}
-    )
-    .then((response) => {
-      setvalues(response.data);
-      console.log(response.data);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
-  }
 
   const handleChange = (event) => {
     // console.log(event.target.value);
@@ -30,11 +16,28 @@ export default function AllFiles(props) {
     
   };
 
+  useEffect(() => {
+    const preload = () => {
+      axios.get(`${API}/getAllFiles`,
+      {headers: {
+        'Authorization': `Bearer ${props.token}`,
+      }}
+      )
+      .then((response) => {
+        setvalues(response.data);
+      })
+      .catch((error) => {
+          console.log(error);
+      });
+    }
+    preload();
+  }, [ props.token])
+
+
 
   return (
     <section className="section section-lg bg-default">
       <div className="container">
-        {preload()}
         <div className="col-sm-10 offset-1">
           <h2 className="fw-bold"> {year==="" || year==="Select Year" ? "" : year} Uploaded Documents</h2>
           <hr className="divider bg-madison" />
