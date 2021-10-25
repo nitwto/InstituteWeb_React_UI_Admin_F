@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState } from 'react';
 import { Autocomplete } from '@material-ui/core'
 import axios from 'axios';
 
@@ -8,13 +8,8 @@ import {
   FormControl,
   Input,
   InputLabel,
-  FormHelperText,
-  FormControlLabel,
-  Checkbox,
   TextField,
   Button,
-  Select,
-  MenuItem,
 } from "@material-ui/core/";
 
 function Uploads(props) {
@@ -36,7 +31,6 @@ function Uploads(props) {
     description,
     departments,
     loading,
-    error,
     file,
     uploadedFile,
     formData
@@ -45,10 +39,7 @@ function Uploads(props) {
   const preload = () => {
     setValues({ ...values, formData: new FormData() });
   };
-
-  useEffect(() => {
-    preload();
-  }, []);
+  preload();
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -99,7 +90,7 @@ function Uploads(props) {
 
   const handleChange = (event, name) => {
     let value = "";
-    if(name == "file") {
+    if(name === "file") {
       value = event.target.files[0];
     }
     else {

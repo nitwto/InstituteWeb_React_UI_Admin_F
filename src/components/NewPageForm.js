@@ -32,13 +32,6 @@ export default function NewPageForm(props) {
     width: "300px",
   };
 
-  const resetAll = () => {
-    settitle("");
-    setpath("");
-    seturl("");
-    setFocus(false);
-    setZeroSubmission(true);
-  };
 
   const onChangeHandler = (object) => {
     const value = object.target.value;

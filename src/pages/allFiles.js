@@ -1,7 +1,7 @@
 import axios from 'axios';
-import React, { useState , useEffect} from 'react';
+import React, { useState } from 'react';
 import GetYearFiles from '../components/GetYearFiles';
-import { API, STATIC_API } from '../constants/extras';
+import { API } from '../constants/extras';
 
 
 export default function AllFiles(props) {
@@ -30,18 +30,13 @@ export default function AllFiles(props) {
     
   };
 
-  useEffect(() => {
-    preload();
-  }, [])
-
-
 
   return (
     <section className="section section-lg bg-default">
       <div className="container">
-
+        {preload()}
         <div className="col-sm-10 offset-1">
-          <h2 className="fw-bold"> {year=="" || year=="Select Year" ? "" : year} Uploaded Documents</h2>
+          <h2 className="fw-bold"> {year==="" || year==="Select Year" ? "" : year} Uploaded Documents</h2>
           <hr className="divider bg-madison" />
           <br/>
 
