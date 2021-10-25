@@ -2,25 +2,19 @@ import "../styles/App.css";
 import React, { useState, useRef } from "react";
 import { placementschema } from "../constants/schemas";
 import { getInitialState } from "../util/formHelpers";
-import { useSelector } from "react-redux";
 
 import {
   FormControl,
   Input,
   InputLabel,
   FormHelperText,
-  FormControlLabel,
-  Checkbox,
-  TextField,
   Button,
   Select,
   MenuItem,
 } from "@material-ui/core/";
-import { DatePicker, LocalizationProvider } from "@material-ui/lab";
-import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 
 import { isCorrect } from "../util/formHelpers";
-import { COURSES, DEPARTMENTS , API} from "../constants/extras";
+import { COURSES , API} from "../constants/extras";
 import AlertComponent from "./AlertComponent";
 
 function PlacementForm(props) {

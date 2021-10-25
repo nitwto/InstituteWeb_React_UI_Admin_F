@@ -5,7 +5,6 @@ import {
 	InputLabel,
 	FormHelperText,
 	Button,
-	Link,
 	FormControlLabel,
 	Checkbox,
 } from "@material-ui/core/";

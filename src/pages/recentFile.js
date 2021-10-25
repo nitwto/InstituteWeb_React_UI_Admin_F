@@ -62,7 +62,7 @@ export default function RecentFile() {
               <h4 className="fw"> {departments} </h4>
             </div>
             <div className="col-4">
-              <h4 className="fw-bold"> <a href={link} className="link-primary" target = "_blank"><u>Open File</u></a> </h4>
+              <h4 className="fw-bold"> <a href={link} className="link-primary" rel="noreferrer" target = "_blank"><u>Open File</u></a> </h4>
               <p value={link} className="fw-bold" id="myLink">{link}</p> <button className="btn btn-info btn-sm" onClick={copyLink}>Copy Link</button>
             </div>
           </div>

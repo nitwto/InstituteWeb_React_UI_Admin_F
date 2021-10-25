@@ -1,10 +1,10 @@
-import React , { useState }from 'react'
+import React from 'react'
 import { STATIC_API } from '../constants/extras';
 
 
 export default function GetYearFiles({ year , files }) {
 
-  if(year.length != 4){
+  if(year.length !== 4){
     return(
       <div>
         
@@ -15,10 +15,10 @@ export default function GetYearFiles({ year , files }) {
 
   const getFiles = () => {
     
-    files.map((file, index) => {
+    files.forEach((file) => {
       const fileYear = file.createdAt.substring(0,4);
       // console.log(fileYear);
-      if(fileYear == year){
+      if(fileYear === year){
         temp.push(file);
       }
     });
@@ -39,10 +39,10 @@ export default function GetYearFiles({ year , files }) {
     <div>
       {getFiles()}
       <br/>
-      {temp.length == 0 && (
+      {temp.length === 0 && (
         <h5>{`${temp.length} files were Uploaded in ${year}`}</h5>
       )}
-      {temp.length != 0 && (
+      {temp.length !== 0 && (
 
         <div>
           <h5>{`${temp.length} files were Uploaded in ${year}`}</h5>
@@ -71,7 +71,7 @@ export default function GetYearFiles({ year , files }) {
                               <td className="text-center">{value.description}</td>
                               <td className="text-center">{value.departments}</td>
                               <td className="text-center">
-                              <a href={path1} className="link-primary" target = "_blank"><button >open</button>
+                              <a href={path1} className="link-primary" rel="noreferrer" target = "_blank"><button >open</button>
                               </a>
                               {" "}
                               <button onClick={copyLink(path1)} >Copy Link</button>

@@ -6,12 +6,7 @@ import {
   Input,
   InputLabel,
   FormHelperText,
-  FormControlLabel,
-  Checkbox,
-  TextField,
   Button,
-  Select,
-  MenuItem,
 } from "@material-ui/core/";
 import { pageschema } from "../constants/schemas";
 import { getInitialState, isCorrect } from "../util/formHelpers";
