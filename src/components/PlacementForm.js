@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core/";
 
 import { isCorrect } from "../util/formHelpers";
-import { COURSES , API} from "../constants/extras";
+import { COURSES , API, DEPARTMENTS} from "../constants/extras";
 import AlertComponent from "./AlertComponent";
 
 function PlacementForm(props) {
@@ -240,16 +240,25 @@ function PlacementForm(props) {
             {errorFields["academic_year"].formHelperText}
           </FormHelperText>
         </FormControl>
-        <FormControl fullWidth={true} style={styles} required>
-          <InputLabel htmlFor={"branch"}>{"Branch"}</InputLabel>
-          <Input
+        <FormControl
+          variant="filled"
+          fullWidth={true}
+          style={styles}
+          required
+        >
+          <InputLabel id="demo-simple-select-label">Branch</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
             id={"branch"}
-            aria-describedby="my-helper-text"
+            name="branch"
             value={PlacementDetails["branch"]}
             onChange={(obj) => onChangeHandler(obj, String)}
             error={errorFields["branch"].error}
-            inputRef={branchRef}
-          />
+          >
+            {DEPARTMENTS.map((department) => {
+              return <MenuItem value={department.value}>{department.title}</MenuItem>;
+            })}
+          </Select>
           <FormHelperText id="my-helper-text">
             {errorFields["branch"].formHelperText}
           </FormHelperText>
