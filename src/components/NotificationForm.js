@@ -72,10 +72,9 @@ function NotificationForm(props) {
     }
 
     async function fetchDeptNotifApi() {
-      console.log("yo");
       const requestOptions = {
+        method: "POST",
         headers: {
-          method: "POST",
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },

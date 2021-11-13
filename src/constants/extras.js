@@ -5,47 +5,47 @@ export const DEPARTMENTS = [
   },
   {
     title: "Biotechnology",
-    value: "be",
+    value: "Biotechnology",
   },
   {
     title: "Chemical",
-    value: "che",
+    value: "Chemical",
   },
   {
     title: "Civil",
-    value: "ce",
+    value: "Civil",
   },
   {
     title: "Computer Science",
-    value: "cse",
+    value: "Computer Science",
   },
   {
     title: "Electronics & Communication",
-    value: "ece",
+    value: "Electronics & Communication",
   },
   {
     title: "Electrical & Electronics",
-    value: "eee",
+    value: "Electrical & Electronics",
   },
   {
     title: "Mechanical",
-    value: "me",
+    value: "Mechanical",
   },
   {
     title: "Metallurgical & Materials",
-    value: "mme",
+    value: "Metallurgical & Materials",
   },
   {
     title: "Physical Education",
-    value: "pe",
+    value: "Physical Education",
   },
   {
     title: "Physics",
-    value: "physics",
+    value: "Physics",
   },
   {
     title: "School of Management",
-    value: "sm",
+    value: "School of Management",
   },
 ];
 
