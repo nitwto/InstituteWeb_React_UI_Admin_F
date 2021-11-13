@@ -20,11 +20,18 @@ import EditorForm from "../containers/EditorForm";
 import PageEditorComponent from "../components/PageEditorComponent";
 import NewPageForm from "../components/NewPageForm";
 import PlacementForm from "../components/PlacementForm";
-import AllUploadedFiles from "./allFiles"
+import AllUploadedFiles from "./allFiles";
 import CreatePageWithJSON from "../components/CreatePageWithJSON";
 import NavigationForm from "../containers/NavigationForm";
-import RecentFile from '../pages/recentFile'
-
+import RecentFile from "../pages/recentFile";
+import {
+  Divider,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  Box,
+} from "@material-ui/core";
 
 // Add other forms and route using react-router-dom
 
@@ -49,6 +56,8 @@ export default function Forms() {
 
   const open = Boolean(anchorEl);
   const openProfile = Boolean(anchorElProfile);
+
+  const drawerWidth = 240;
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -103,161 +112,25 @@ export default function Forms() {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar
+          position="fixed"
+          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          style={{ marginBottom: "90px" }}
+        >
           <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={open}
-              onClose={handleClose}
-            >
-              <MenuItem
-                onClick={() => {
-                  setPresentTab("Home");
-                  handleClose();
-                }}
-              >
-                Home
-              </MenuItem>
-              {authDetails.user && (
-                <MenuItem
-                  onClick={() => {
-                    setPresentTab("NotificationForm");
-                    handleClose();
-                  }}
-                >
-                  Notification Form
-                </MenuItem>
-              )}
-              {authDetails.user && (
-                <MenuItem
-                  onClick={() => {
-                    setPresentTab("RightsForm");
-                    handleClose();
-                  }}
-                >
-                  Rights Form
-                </MenuItem>
-              )}
-              {authDetails.user && (
-                <MenuItem
-                  onClick={() => {
-                    setPresentTab("EditorForm");
-                    handleClose();
-                  }}
-                >
-                  Editor Form
-                </MenuItem>
-              )}
-              {authDetails.user && (
-                <MenuItem
-                  onClick={() => {
-                    setPresentTab("FileUploadForm");
-                    handleClose();
-                  }}
-                >
-                  Upload File
-                </MenuItem>
-              )}
-              {authDetails.user && (
-                <MenuItem
-                  onClick={() => {
-                    setPresentTab("PlacementForm");
-                    handleClose();
-                  }}
-                >
-                  Placement Form
-                </MenuItem>
-              )}
-              {authDetails.user && (
-                <MenuItem
-                  onClick={() => {
-                    setPresentTab("AllUploadedFiles");
-                    handleClose();
-                  }}
-                >
-                  All Uploaded Files
-                </MenuItem>
-              )}
-              {authDetails.user && (
-                <MenuItem
-                  onClick={() => {
-                    setPresentTab("CreatePageWithJSON");
-                    handleClose();
-                  }}
-                >
-                  Create Page With JSON
-                </MenuItem>
-              )}
-              {authDetails.user && (
-                <MenuItem
-                  onClick={() => {
-                    setPresentTab("NavigationForm");
-                    handleClose();
-                  }}
-                >
-                  Navigation Form
-                </MenuItem>
-              )}
-            </Menu>
             <Typography variant="h6" className={classes.title}>
               Portal for Website
             </Typography>
             {authDetails.user ? (
-              <div>
-                <IconButton
-                  aria-label="account of current user"
-                  aria-controls="profile-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenuProfile}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={openProfile}
-                  onClose={handleCloseProfile}
-                >
-                  <MenuItem
-                    onClick={() => {
-                      handleSignOut();
-                      handleCloseProfile();
-                    }}
-                  >
-                    LogOut
-                  </MenuItem>
-                </Menu>
-              </div>
+              <Button
+                color="inherit"
+                onClick={() => {
+                  handleSignOut();
+                  handleCloseProfile();
+                }}
+              >
+                Logout
+              </Button>
             ) : (
               <Button
                 color="inherit"
@@ -270,75 +143,221 @@ export default function Forms() {
             )}
           </Toolbar>
         </AppBar>
+        <Drawer
+          variant="permanent"
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            [`& .MuiDrawer-paper`]: {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
+          }}
+        >
+          <Toolbar />
+          <Box sx={{ overflow: "auto" }}>
+            <List>
+              <ListItem
+                button
+                onClick={() => {
+                  setPresentTab("Home");
+                  handleClose();
+                }}
+              >
+                Home
+              </ListItem>
+              <Divider />
+              {authDetails.user && (
+                <div>
+                  <ListItem
+                    button
+                    onClick={() => {
+                      setPresentTab("NotificationForm");
+                      handleClose();
+                    }}
+                  >
+                    Notification Form
+                  </ListItem>
+                  <Divider />
+                </div>
+              )}
+              {authDetails.user && (
+                <div>
+                  <ListItem
+                    button
+                    onClick={() => {
+                      setPresentTab("RightsForm");
+                      handleClose();
+                    }}
+                  >
+                    Rights Form
+                  </ListItem>
+                  <Divider />
+                </div>
+              )}
+              {authDetails.user && (
+                <div>
+                  <ListItem
+                    button
+                    onClick={() => {
+                      setPresentTab("EditorForm");
+                      handleClose();
+                    }}
+                  >
+                    Editor Form
+                  </ListItem>
+                  <Divider />
+                </div>
+              )}
+              {authDetails.user && (
+                <div>
+                  <ListItem
+                    button
+                    onClick={() => {
+                      setPresentTab("FileUploadForm");
+                      handleClose();
+                    }}
+                  >
+                    Upload File
+                  </ListItem>
+                  <Divider />
+                </div>
+              )}
+              {authDetails.user && (
+                <div>
+                  <ListItem
+                    button
+                    onClick={() => {
+                      setPresentTab("PlacementForm");
+                      handleClose();
+                    }}
+                  >
+                    Placement Form
+                  </ListItem>
+                  <Divider />
+                </div>
+              )}
+              {authDetails.user && (
+                <div>
+                  <ListItem
+                    button
+                    onClick={() => {
+                      setPresentTab("AllUploadedFiles");
+                      handleClose();
+                    }}
+                  >
+                    All Uploaded Files
+                  </ListItem>
+                  <Divider />
+                </div>
+              )}
+              {authDetails.user && (
+                <div>
+                  <ListItem
+                    button
+                    onClick={() => {
+                      setPresentTab("CreatePageWithJSON");
+                      handleClose();
+                    }}
+                  >
+                    Create Page With JSON
+                  </ListItem>
+                  <Divider />
+                </div>
+              )}
+              {authDetails.user && (
+                <div>
+                  <ListItem
+                    button
+                    onClick={() => {
+                      setPresentTab("NavigationForm");
+                      handleClose();
+                    }}
+                  >
+                    Navigation Form
+                  </ListItem>
+                  <Divider />
+                </div>
+              )}
+            </List>
+          </Box>
+        </Drawer>
       </div>
-      <div>{alertArray}</div>
-      {presentTab === "Home" && (
-        <h1>Welcome To The Institute Website Portal</h1>
-      )}
-      {presentTab === "NotificationForm" && (
-        <div>
-          <NotificationForm addAlert={addAlert} token={authDetails.token} />
-        </div>
-      )}
-      {presentTab === "Login" && (
-        <Login handleTab={handlePresentTab} addAlert={addAlert} />
-      )}
-      {presentTab === "RightsForm" && (
-        <RightsForm handleTab={handlePresentTab} addAlert={addAlert} />
-      )}
-      {presentTab === "EditorForm" && (
-        <EditorForm
-          handleTab={handlePresentTab}
-          addAlert={addAlert}
-          handlePageChange={handleEditPageDetails}
-          token={authDetails.token}
-        />
-      )}
-      {presentTab === "PageEditor" && (
-        <PageEditorComponent
-          pageDetails={editPageDetails}
-          handleTab={handlePresentTab}
-          addAlert={addAlert}
-          token={authDetails.token}
-        />
-      )}
+      <div style={{ margin: "65px 0px 0px 240px" }}>
+        <div>{alertArray}</div>
+        {presentTab === "Home" && (
+          <h1>Welcome To The Institute Website Portal</h1>
+        )}
+        {presentTab === "NotificationForm" && (
+          <div>
+            <NotificationForm addAlert={addAlert} token={authDetails.token} />
+          </div>
+        )}
+        {presentTab === "Login" && (
+          <Login handleTab={handlePresentTab} addAlert={addAlert} />
+        )}
+        {presentTab === "RightsForm" && (
+          <RightsForm handleTab={handlePresentTab} addAlert={addAlert} />
+        )}
+        {presentTab === "EditorForm" && (
+          <EditorForm
+            handleTab={handlePresentTab}
+            addAlert={addAlert}
+            handlePageChange={handleEditPageDetails}
+            token={authDetails.token}
+          />
+        )}
+        {presentTab === "PageEditor" && (
+          <PageEditorComponent
+            pageDetails={editPageDetails}
+            handleTab={handlePresentTab}
+            addAlert={addAlert}
+            token={authDetails.token}
+          />
+        )}
 
-      {presentTab === "NewPageForm" && (
-        <NewPageForm
-          handleTab={handlePresentTab}
-          addAlert={addAlert}
-          token={authDetails.token}
-        />
-      )}
-      {presentTab === "FileUploadForm" && (
-        <div>
-          <FileUploadForm addAlert={addAlert} token={authDetails.token} setPresentTab={setPresentTab}/>
-        </div>
-      )}
-      {presentTab === "PlacementForm" && (
-        <div>
-          <PlacementForm addAlert={addAlert} token={authDetails.token}/>
-        </div>
-      )}
-      {presentTab === "AllUploadedFiles" && (
-        <div>
-          <AllUploadedFiles addAlert={addAlert} token={authDetails.token}/>
-        </div>
-      )}{presentTab === "RecentFile" && (
-        <div>
-          <RecentFile addAlert={addAlert} token={authDetails.token}/>
-        </div>
-      )}
-      {presentTab === "CreatePageWithJSON" && (
-        <div>
-          <CreatePageWithJSON addAlert={addAlert} token={authDetails.token}/>
-        </div>
-      )}
-      {presentTab === "NavigationForm" && (
-        <div>
-          <NavigationForm addAlert={addAlert} token={authDetails.token} />
-        </div>
-      )}
+        {presentTab === "NewPageForm" && (
+          <NewPageForm
+            handleTab={handlePresentTab}
+            addAlert={addAlert}
+            token={authDetails.token}
+          />
+        )}
+        {presentTab === "FileUploadForm" && (
+          <div>
+            <FileUploadForm
+              addAlert={addAlert}
+              token={authDetails.token}
+              setPresentTab={setPresentTab}
+            />
+          </div>
+        )}
+        {presentTab === "PlacementForm" && (
+          <div>
+            <PlacementForm addAlert={addAlert} token={authDetails.token} />
+          </div>
+        )}
+        {presentTab === "AllUploadedFiles" && (
+          <div>
+            <AllUploadedFiles addAlert={addAlert} token={authDetails.token} />
+          </div>
+        )}
+        {presentTab === "RecentFile" && (
+          <div>
+            <RecentFile addAlert={addAlert} token={authDetails.token} />
+          </div>
+        )}
+        {presentTab === "CreatePageWithJSON" && (
+          <div>
+            <CreatePageWithJSON addAlert={addAlert} token={authDetails.token} />
+          </div>
+        )}
+        {presentTab === "NavigationForm" && (
+          <div>
+            <NavigationForm addAlert={addAlert} token={authDetails.token} />
+          </div>
+        )}
+      </div>
     </React.Fragment>
   );
 }
