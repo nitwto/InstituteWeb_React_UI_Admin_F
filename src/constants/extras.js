@@ -52,4 +52,5 @@ export const DEPARTMENTS = [
 export const DEPARTMENTSNAMES = ["All","cse","ece","che","be","me","pe","physics","sm","mathematics"];
 export const API = "http://daa.nitw.ac.in:8080/api";
 export const STATIC_API = "http://daa.nitw.ac.in:8080/static";
+export const TEST_API = "https://insti-web-backend.herokuapp.com/api";
 export const COURSES = ["B. Tech", "M. Tech", "MCA"]; // for placements form

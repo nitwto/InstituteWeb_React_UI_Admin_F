@@ -80,10 +80,7 @@ function NotificationForm(props) {
         },
         body: JSON.stringify({ department: updateDepartment }),
       };
-      const response = await fetch(
-        `${API}/notification/dept`,
-        requestOptions
-      );
+      const response = await fetch(`${API}/notification/dept`, requestOptions);
       if (!response) {
         addAlert(
           <AlertComponent
@@ -119,6 +116,7 @@ function NotificationForm(props) {
     setNewNotification((prevState) => {
       return !prevState;
     });
+    resetAll();
   };
 
   const focusElement = (formFields) => {
@@ -235,6 +233,40 @@ function NotificationForm(props) {
     setValue(obj, value);
   };
 
+  const deleteNotification = async(e) => {
+    e.preventDefault();
+    if(notificationDetails){
+      const requestOptions = {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${props.token}`,
+        },
+        body: JSON.stringify(notificationDetails),
+      };
+      const response = await fetch(
+        `http://insti-web-backend.herokuapp.com/api/notification/delete/${notificationDetails._id}`,
+        requestOptions
+      );
+      const data = await response.json();
+      if (data.err) {
+        props.addAlert(<AlertComponent type="error" text={data.err} />);
+      } else {
+        props.addAlert(
+          <AlertComponent
+            type="success"
+            text={"The notification has been deleted successfully."}
+          />
+        );
+      }
+      resetAll();
+    } else {
+      setZeroSubmission(false);
+      setFocus(true);
+    }
+  }
+
+
   const submitHandler = async (e) => {
     e.preventDefault();
     if (isCorrect(notificationSchema, notificationDetails)) {
@@ -247,11 +279,8 @@ function NotificationForm(props) {
         body: JSON.stringify(notificationDetails),
       };
       var data;
-      if(newNotification){
-        const response = await fetch(
-          `${API}/notification/add`,
-          requestOptions
-        );
+      if (newNotification) {
+        const response = await fetch(`${API}/notification/add`, requestOptions);
         if (!response) {
           props.addAlert(
             <AlertComponent
@@ -279,14 +308,18 @@ function NotificationForm(props) {
         }
         data = await response.json();
       }
-      
+
       if (data.err) {
         props.addAlert(<AlertComponent type="error" text={data.err} />);
       } else {
         props.addAlert(
           <AlertComponent
             type="success"
-            text={ newNotification ? "The notification has been added to the website." : "The notification has beed updated." }
+            text={
+              newNotification
+                ? "The notification has been added to the website."
+                : "The notification has beed updated."
+            }
           />
         );
         resetAll();
@@ -298,7 +331,6 @@ function NotificationForm(props) {
   };
 
   const getInitialUpdateForm = () => {
-    console.log(updateTitle);
     if (!newNotification)
       return (
         <div style={{ display: "flex", justifyContent: "space-around" }}>
@@ -317,7 +349,11 @@ function NotificationForm(props) {
               onChange={(obj) => onChangeHandler(obj, String)}
             >
               {DEPARTMENTS.map((department) => {
-                return <MenuItem value={department.value}>{department.title}</MenuItem>;
+                return (
+                  <MenuItem value={department.value}>
+                    {department.title}
+                  </MenuItem>
+                );
               })}
             </Select>
           </FormControl>
@@ -443,7 +479,11 @@ function NotificationForm(props) {
                 error={errorFields["department"].error}
               >
                 {DEPARTMENTS.map((department) => {
-                  return <MenuItem value={department.value}>{department.title}</MenuItem>;
+                  return (
+                    <MenuItem value={department.value}>
+                      {department.title}
+                    </MenuItem>
+                  );
                 })}
               </Select>
               <FormHelperText id="my-helper-text">
@@ -454,6 +494,7 @@ function NotificationForm(props) {
               <FormControlLabel
                 control={
                   <Checkbox
+                    value={notificationDetails["is_published"]}
                     checked={notificationDetails["is_published"]}
                     onChange={(obj) => onChangeHandler(obj, Boolean)}
                     id={"is_published"}
@@ -467,6 +508,7 @@ function NotificationForm(props) {
                 control={
                   <Checkbox
                     checked={notificationDetails["is_breaking_news"]}
+                    value={notificationDetails["is_breaking_news"]}
                     onChange={(obj) => onChangeHandler(obj, Boolean)}
                     id={"is_breaking_news"}
                   />
@@ -540,6 +582,16 @@ function NotificationForm(props) {
             >
               Reset
             </Button>
+            {!newNotification && (
+              <Button
+                style={{ marginLeft: "10px" }}
+                variant="contained"
+                color="error"
+                onClick={deleteNotification}
+              >
+                Delete
+              </Button>
+            )}
           </div>
         </div>
       );

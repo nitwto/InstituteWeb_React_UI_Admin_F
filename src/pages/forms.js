@@ -54,9 +54,6 @@ export default function Forms() {
   const authDetails = useSelector((state) => state.auth);
   const [alertArray, setAlertArray] = useState([]);
 
-  const open = Boolean(anchorEl);
-  const openProfile = Boolean(anchorElProfile);
-
   const drawerWidth = 240;
 
   const handleClose = () => {
