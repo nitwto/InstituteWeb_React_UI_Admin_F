@@ -21,6 +21,7 @@ import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 import { isCorrect } from "../util/formHelpers";
 import { API, DEPARTMENTS } from "../constants/extras";
 import AlertComponent from "./AlertComponent";
+import AlertDialogComponent from "./AlertDialogComponent";
 
 function NotificationForm(props) {
   const [newNotification, setNewNotification] = useState(true);
@@ -32,6 +33,7 @@ function NotificationForm(props) {
   const [allNotifications, setAllNotifications] = useState([]);
   const [zeroSubmission, setZeroSubmission] = useState(true);
   const [focus, setFocus] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const titleRef = useRef(null);
   const summaryRef = useRef(null);
@@ -102,6 +104,14 @@ function NotificationForm(props) {
       }
     }
   }, [updateDepartment, token, addAlert]);
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
 
   const resetAll = () => {
     setNotificaitonDetails(getInitialState(notificationSchema));
@@ -233,9 +243,8 @@ function NotificationForm(props) {
     setValue(obj, value);
   };
 
-  const deleteNotification = async(e) => {
-    e.preventDefault();
-    if(notificationDetails){
+  const deleteNotification = async () => {
+    if (notificationDetails) {
       const requestOptions = {
         method: "DELETE",
         headers: {
@@ -264,8 +273,7 @@ function NotificationForm(props) {
       setZeroSubmission(false);
       setFocus(true);
     }
-  }
-
+  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -587,7 +595,7 @@ function NotificationForm(props) {
                 style={{ marginLeft: "10px" }}
                 variant="contained"
                 color="error"
-                onClick={deleteNotification}
+                onClick={handleOpenDialog}
               >
                 Delete
               </Button>
@@ -609,12 +617,21 @@ function NotificationForm(props) {
       <div style={{ margin: "10px" }}>
         <Button onClick={toggleNewNotification}>
           {newNotification
-            ? "Update an existing notification"
+            ? "Update or Delete an existing notification"
             : "Create a new Notification"}
         </Button>
         {getInitialUpdateForm()}
         {getTheForm()}
       </div>
+      <AlertDialogComponent
+        title="Are you sure you want to delete the following page?"
+        openDialog={openDialog}
+        onDisagree={handleCloseDialog}
+        onAgree={() => {
+          deleteNotification();
+          handleCloseDialog();
+        }}
+      />
     </React.Fragment>
   );
 }

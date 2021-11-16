@@ -3,6 +3,7 @@ import EditorJS from "@editorjs/editorjs";
 import { tools } from "../constants/toolsForEditor";
 import { Button } from "@material-ui/core";
 import AlertComponent from "./AlertComponent";
+import AlertDialogComponent from "./AlertDialogComponent";
 import { API, TEST_API } from "../constants/extras";
 
 export default function PageEditorComponent(props) {
@@ -14,7 +15,17 @@ export default function PageEditorComponent(props) {
     data: pageJson,
   });
 
+  const [openDialog, setOpenDialog] = useState(false);
+
   const { title, url, path } = props.pageDetails;
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
 
   const onSaveHandler = async (outputData) => {
     let method = "PUT";
@@ -61,12 +72,15 @@ export default function PageEditorComponent(props) {
       };
       const response = await fetch(api, requestOptions);
       var data = null;
-      if(!response){
+      if (!response) {
         data = await response.json();
       }
       if (!response || (data && data.error)) {
         props.addAlert(
-          <AlertComponent type="error" text="Sorry, The page has not been deleted. Please try again later." />
+          <AlertComponent
+            type="error"
+            text="Sorry, The page has not been deleted. Please try again later."
+          />
         );
       } else {
         props.addAlert(<AlertComponent type="success" text={successMessage} />);
@@ -111,13 +125,22 @@ export default function PageEditorComponent(props) {
             style={{ marginLeft: "10px" }}
             variant="contained"
             color="error"
-            onClick={deleteHandler}
+            onClick={handleOpenDialog}
           >
             Delete the page
           </Button>
         </div>
         <div id="editorjs"></div>
       </div>
+      <AlertDialogComponent
+        title="Are you sure you want to delete the following page?"
+        openDialog={openDialog}
+        onDisagree={handleCloseDialog}
+        onAgree={() => {
+          deleteHandler();
+          handleCloseDialog();
+        }}
+      />
     </React.Fragment>
   );
 }
