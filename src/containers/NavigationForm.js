@@ -68,6 +68,7 @@ export default function NavigationForm(props) {
     setIsPath(false);
     setIsInternal(false);
     setZeroSubmission(true);
+    setUpdateNavigation(null);
   };
 
   const shuffleDropDownForm = () => {
@@ -141,9 +142,9 @@ export default function NavigationForm(props) {
           is_path,
         }),
       };
-	  if(editNavigation) {
-		  // add update api
-	  }
+      if (editNavigation) {
+        // add update api
+      }
       const response = await fetch(`${API}/nav/add`, requestOptions);
       if (!response) {
         return;
@@ -167,8 +168,33 @@ export default function NavigationForm(props) {
   };
 
   const deleteHandler = async () => {
-	// Make delete call
-  }
+    const requestOptions = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${props.token}`,
+      },
+    };
+    const response = await fetch(
+      `${API}/nav/delete/${updateNavigation.id}`,
+      requestOptions
+    );
+    if (!response) {
+      return;
+    }
+    const data = await response.json();
+    if (data.err) {
+      props.addAlert(<AlertComponent type="error" text={data.err} />);
+    } else {
+      props.addAlert(
+        <AlertComponent
+          type="success"
+          text="Navigation has been deleted successfully"
+        />
+      );
+      resetAll();
+    }
+  };
 
   if (!zeroSubmission) getError();
 
@@ -306,7 +332,7 @@ export default function NavigationForm(props) {
         >
           {editNavigation ? "Update" : "Submit"}
         </Button>
-		{editNavigation && (
+        {editNavigation && (
           <Button
             style={{ marginLeft: "10px" }}
             variant="contained"
@@ -315,7 +341,7 @@ export default function NavigationForm(props) {
           >
             {"Delete"}
           </Button>
-      )}
+        )}
       </div>
     </React.Fragment>
   );
