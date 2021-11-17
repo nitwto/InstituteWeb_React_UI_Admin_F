@@ -8,12 +8,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import { makeStyles } from "@material-ui/styles";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import { authActions } from "../store/authSlice";
 import RightsForm from "../components/RightsForm";
 import EditorForm from "../containers/EditorForm";
@@ -24,14 +19,8 @@ import AllUploadedFiles from "./allFiles";
 import CreatePageWithJSON from "../components/CreatePageWithJSON";
 import NavigationForm from "../containers/NavigationForm";
 import RecentFile from "../pages/recentFile";
-import {
-  Divider,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  Box,
-} from "@material-ui/core";
+import { Divider, Drawer, List, ListItem, Box } from "@material-ui/core";
+import { AllUrls } from "../containers/AllUrls";
 
 // Add other forms and route using react-router-dom
 
@@ -47,30 +36,12 @@ const useStyles = makeStyles((theme) => ({
 export default function Forms() {
   const classes = useStyles();
   const [presentTab, setPresentTab] = useState("Home");
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [anchorElProfile, setAnchorElProfile] = useState(null);
   const [editPageDetails, setEditPageDetails] = useState(null);
   const dispatch = useDispatch();
   const authDetails = useSelector((state) => state.auth);
   const [alertArray, setAlertArray] = useState([]);
 
   const drawerWidth = 240;
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleCloseProfile = () => {
-    setAnchorElProfile(null);
-  };
-
-  const handleMenuProfile = (event) => {
-    setAnchorElProfile(event.currentTarget);
-  };
 
   const handlePresentTab = (tab) => {
     setPresentTab(tab);
@@ -123,7 +94,6 @@ export default function Forms() {
                 color="inherit"
                 onClick={() => {
                   handleSignOut();
-                  handleCloseProfile();
                 }}
               >
                 Logout
@@ -158,7 +128,6 @@ export default function Forms() {
                 button
                 onClick={() => {
                   setPresentTab("Home");
-                  handleClose();
                 }}
               >
                 Home
@@ -170,7 +139,6 @@ export default function Forms() {
                     button
                     onClick={() => {
                       setPresentTab("NotificationForm");
-                      handleClose();
                     }}
                   >
                     Notification Form
@@ -184,7 +152,6 @@ export default function Forms() {
                     button
                     onClick={() => {
                       setPresentTab("RightsForm");
-                      handleClose();
                     }}
                   >
                     Rights Form
@@ -198,7 +165,6 @@ export default function Forms() {
                     button
                     onClick={() => {
                       setPresentTab("EditorForm");
-                      handleClose();
                     }}
                   >
                     Editor Form
@@ -212,7 +178,6 @@ export default function Forms() {
                     button
                     onClick={() => {
                       setPresentTab("FileUploadForm");
-                      handleClose();
                     }}
                   >
                     Upload File
@@ -226,7 +191,6 @@ export default function Forms() {
                     button
                     onClick={() => {
                       setPresentTab("PlacementForm");
-                      handleClose();
                     }}
                   >
                     Placement Form
@@ -240,7 +204,6 @@ export default function Forms() {
                     button
                     onClick={() => {
                       setPresentTab("AllUploadedFiles");
-                      handleClose();
                     }}
                   >
                     All Uploaded Files
@@ -254,7 +217,6 @@ export default function Forms() {
                     button
                     onClick={() => {
                       setPresentTab("CreatePageWithJSON");
-                      handleClose();
                     }}
                   >
                     Create Page With JSON
@@ -268,7 +230,6 @@ export default function Forms() {
                     button
                     onClick={() => {
                       setPresentTab("NavigationForm");
-                      handleClose();
                     }}
                   >
                     Navigation Form
@@ -352,6 +313,16 @@ export default function Forms() {
         {presentTab === "NavigationForm" && (
           <div>
             <NavigationForm addAlert={addAlert} token={authDetails.token} />
+          </div>
+        )}
+        {presentTab === "AllUrls" && (
+          <div>
+            <AllUrls
+              addAlert={addAlert}
+              token={authDetails.token}
+              handlePageChange={handleEditPageDetails}
+              handleTab={handlePresentTab}
+            />
           </div>
         )}
       </div>

@@ -108,6 +108,15 @@ export default function EditorForm(props) {
             Want to create a new page?
           </Button>
         </div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            style={{ marginLeft: "10px", marginTop: "10px" }}
+            color="primary"
+            onClick={() => {props.handleTab("AllUrls")}}
+          >
+            See All Urls currently present
+          </Button>
+        </div>
       </div>
     </React.Fragment>
   );

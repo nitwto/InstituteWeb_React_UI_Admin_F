@@ -219,6 +219,7 @@ function NotificationForm(props) {
 
   const setValue = (field, value) => {
     if (field === "updateDepartment") {
+      resetAll();
       setUpdateDepartment(value);
       return;
     }

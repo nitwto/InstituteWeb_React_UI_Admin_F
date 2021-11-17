@@ -47,7 +47,6 @@ export default function DropDownForm(props) {
                 return;
             }
             const data = await response.json();
-            console.log(data);
             setAllNavigation(data);
         }
 
