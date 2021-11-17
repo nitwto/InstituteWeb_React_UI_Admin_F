@@ -15,7 +15,7 @@ import {
   Select,
   MenuItem,
 } from "@material-ui/core/";
-import { DatePicker, LocalizationProvider } from "@material-ui/lab";
+import { DatePicker,DateTimePicker, LocalizationProvider } from "@material-ui/lab";
 import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 
 import { isCorrect } from "../util/formHelpers";
@@ -540,7 +540,7 @@ function NotificationForm(props) {
               </FormHelperText>
             </FormControl>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <DateTimePicker
                 label={"Start Date"}
                 value={notificationDetails["start_date"]}
                 onChange={(date) => setValue("start_date", date)}
@@ -554,7 +554,7 @@ function NotificationForm(props) {
               />
             </LocalizationProvider>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <DateTimePicker
                 label={"End Date"}
                 value={notificationDetails["end_date"]}
                 onChange={(date) => setValue("end_date", date)}

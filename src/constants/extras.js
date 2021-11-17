@@ -1,6 +1,6 @@
 export const DEPARTMENTS = [
   {
-    title: "All",
+    title: "Main Website",
     value: "All",
   },
   {
