@@ -67,7 +67,7 @@ export default function Forms() {
       body: JSON.stringify(),
     };
     const response = await fetch(
-      "http:///insti-web-backend.herokuapp.com/api/signout",
+      "https:///insti-web-backend.herokuapp.com/api/signout",
       requestOptions
     );
     if (!response) {
