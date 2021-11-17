@@ -1,4 +1,20 @@
 export const text_cleaner = (text) => {
+  if (text === "/mathematics") return "Mathematics";
+  if (text === "/cse") return "Computer Science";
+  if (text === "/cs") return "Computer Science";
+  if (text === "/eee") return "Electrical & Electronics";
+  if (text === "/ece") return "Electronics & Communication";
+  if (text === "/bt") return "Biotechnology";
+  if (text === "/cy") return "Chemical";
+  if (text === "/ce") return "Civil";
+  if (text === "/me") return "Mechanical";
+  if (text === "/pe") return "Physical Education";
+  if (text === "/physics") return "Physics";
+  if (text === "/sm") return "School of Management";
+  if (text === "/mme") return "Metallurgical and Materials";
+  if (text === "/facilities/library") return "Library";
+  if (text === "/hss") return "Humanities and Social Science";
+  if (text === "/rnd") return "Research and Development";
   var result = text.slice(1);
   result = result.replace("_", " ");
   result = result.replace(/\//g, " ");

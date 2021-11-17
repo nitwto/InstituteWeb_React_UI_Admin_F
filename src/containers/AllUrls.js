@@ -91,7 +91,7 @@ export const AllUrls = (props) => {
   });
 
   return (
-    <Grid container direction="column" margin='2vw'>
+    <Grid container direction="column" marginTop='10vh'>
       <Box sx={{ display: "flex", alignItems: "flex-end", margin: "auto" }}>
         <SearchIcon sx={{ color: "action.active", mr: 2, my: 0.5 }} />
         <TextField
@@ -111,16 +111,19 @@ export const AllUrls = (props) => {
           ></ListSubheader>
         }
       >
-        <Grid container direction="row">
+        <Grid container direction="row" justifyContent='space-between'>
           {allUrls
             .filter(
               (item) =>
                 item.title.toLowerCase().includes(searchString.toLowerCase()) ||
                 item.path.toLowerCase().includes(searchString.toLowerCase()) ||
-                item.url.toLowerCase().includes(searchString.toLowerCase())
+                item.url.toLowerCase().includes(searchString.toLowerCase()) ||
+                (text_cleaner(item.path))
+                  .toLowerCase()
+                  .includes(searchString.toLocaleLowerCase())
             )
             .map((item) => (
-              <Grid item md={6}>
+              <Grid item md={5}>
                 {" "}
                 <ListItem>
                   <Button
