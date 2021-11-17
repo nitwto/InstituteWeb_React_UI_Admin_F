@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
   List,
-  ListItem,
   ListItemText,
   ListSubheader,
   Button,
   Grid,
   Box,
-  TextField
+  TextField,
 } from "@material-ui/core";
 import AlertComponent from "../components/AlertComponent";
 import { TEST_API } from "../constants/extras";
@@ -91,7 +90,7 @@ export const AllUrls = (props) => {
   });
 
   return (
-    <Grid container direction="column" marginTop='10vh'>
+    <Grid container direction="column" marginTop="10vh">
       <Box sx={{ display: "flex", alignItems: "flex-end", margin: "auto" }}>
         <SearchIcon sx={{ color: "action.active", mr: 2, my: 0.5 }} />
         <TextField
@@ -111,21 +110,56 @@ export const AllUrls = (props) => {
           ></ListSubheader>
         }
       >
-        <Grid container direction="row" justifyContent='space-between'>
+        <table style={{ width: "80%", margin: "auto", marginTop: "2rem" }}>
+          <thead>
+            <tr
+              style={{
+                backgroundColor: "#1976d2",
+                height: "2.5rem",
+                fontSize: "1.3rem",
+                color: "white",
+              }}
+            >
+              <th
+                style={{ textAlign: "center", fontWeight: "600", width: "35%" }}
+              >
+                URL
+              </th>
+              <th
+                style={{ textAlign: "center", fontWeight: "600", width: "45%" }}
+              >
+                TITLE
+              </th>
+              <th
+                style={{ textAlign: "center", fontWeight: "600", width: "20%" }}
+              >
+                PATH
+              </th>
+            </tr>
+          </thead>
           {allUrls
             .filter(
               (item) =>
                 item.title.toLowerCase().includes(searchString.toLowerCase()) ||
                 item.path.toLowerCase().includes(searchString.toLowerCase()) ||
                 item.url.toLowerCase().includes(searchString.toLowerCase()) ||
-                (text_cleaner(item.path))
+                text_cleaner(item.path)
                   .toLowerCase()
                   .includes(searchString.toLocaleLowerCase())
             )
             .map((item) => (
-              <Grid item md={5}>
-                {" "}
-                <ListItem>
+              <tr>
+                <td>
+                  <Button
+                    onClick={() => {
+                      onSubmit(item.url);
+                    }}
+                    style={{ textTransform: "none" }}
+                  >
+                    <ListItemText>{item.url}</ListItemText>
+                  </Button>
+                </td>
+                <td>
                   <Button
                     onClick={() => {
                       onSubmit(item.url);
@@ -138,10 +172,15 @@ export const AllUrls = (props) => {
                       )}`}
                     </ListItemText>
                   </Button>
-                </ListItem>
-              </Grid>
+                </td>
+                <td>
+                  <ListItemText>
+                    {`${text_cleaner("/" + item.path)}`}
+                  </ListItemText>
+                </td>
+              </tr>
             ))}
-        </Grid>
+        </table>
       </List>
     </Grid>
   );
