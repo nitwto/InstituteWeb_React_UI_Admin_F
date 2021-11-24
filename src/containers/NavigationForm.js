@@ -176,7 +176,7 @@ export default function NavigationForm(props) {
       },
     };
     const response = await fetch(
-      `${API}/nav/delete/${updateNavigation.id}`,
+      `${API}/nav/delete/${updateNavigation._id}`,
       requestOptions
     );
     if (!response) {
