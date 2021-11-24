@@ -244,7 +244,7 @@ export default function NavigationForm(props) {
         >
           <Button type="outline" href="#" onClick={shuffleEditNavigation}>
             {!editNavigation
-              ? "Edit existing navigation tab"
+              ? "Delete existing navigation tab"
               : "Add new navigation tab"}
           </Button>
         </div>
@@ -271,67 +271,79 @@ export default function NavigationForm(props) {
             </Select>
           </FormControl>
         )}
-        <FormControl fullWidth={true} style={styles} required>
-          <InputLabel htmlFor={"title"}>{"title"}</InputLabel>
-          <Input
-            id={"title"}
-            aria-describedby="my-helper-text"
-            value={title}
-            onChange={(obj) => onChangeHandler(obj)}
-            error={titleError}
-          />
-          <FormHelperText id="my-helper-text">{titleErrorText}</FormHelperText>
-        </FormControl>
-        <FormControl fullWidth={true} style={styles} required>
-          <InputLabel htmlFor={"priority"}>{"priority"}</InputLabel>
-          <Input
-            type="number"
-            id={"priority"}
-            aria-describedby="my-helper-text"
-            inputProps={{ inputProps: { min: 0 } }}
-            value={priority}
-            onChange={(obj) => onChangeHandler(obj)}
-            error={priorityError}
-          />
-          <FormHelperText id="my-helper-text">
-            {priorityErrorText}
-          </FormHelperText>
-        </FormControl>
-        <FormControl fullWidth={true} style={styles}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={is_path}
-                onChange={(obj) => onChangeHandler(obj)}
-                id={"is_path"}
-              />
-            }
-            label={"Has path"}
-          />
-        </FormControl>
-        <FormControl fullWidth={true} style={styles}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={is_internal}
-                onChange={(obj) => onChangeHandler(obj)}
-                id={"is_breaking_news"}
-              />
-            }
-            label={"Internal Navbar"}
-          />
-        </FormControl>
+        {!editNavigation && (
+          <FormControl fullWidth={true} style={styles} required>
+            <InputLabel htmlFor={"title"}>{"title"}</InputLabel>
+            <Input
+              id={"title"}
+              aria-describedby="my-helper-text"
+              value={title}
+              onChange={(obj) => onChangeHandler(obj)}
+              error={titleError}
+            />
+            <FormHelperText id="my-helper-text">
+              {titleErrorText}
+            </FormHelperText>
+          </FormControl>
+        )}
+        {!editNavigation && (
+          <FormControl fullWidth={true} style={styles} required>
+            <InputLabel htmlFor={"priority"}>{"priority"}</InputLabel>
+            <Input
+              type="number"
+              id={"priority"}
+              aria-describedby="my-helper-text"
+              inputProps={{ inputProps: { min: 0 } }}
+              value={priority}
+              onChange={(obj) => onChangeHandler(obj)}
+              error={priorityError}
+            />
+            <FormHelperText id="my-helper-text">
+              {priorityErrorText}
+            </FormHelperText>
+          </FormControl>
+        )}
+        {!editNavigation && (
+          <FormControl fullWidth={true} style={styles}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={is_path}
+                  onChange={(obj) => onChangeHandler(obj)}
+                  id={"is_path"}
+                />
+              }
+              label={"Has path"}
+            />
+          </FormControl>
+        )}
+        {!editNavigation && (
+          <FormControl fullWidth={true} style={styles}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={is_internal}
+                  onChange={(obj) => onChangeHandler(obj)}
+                  id={"is_breaking_news"}
+                />
+              }
+              label={"Internal Navbar"}
+            />
+          </FormControl>
+        )}
       </div>
 
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <Button
-          style={{ marginLeft: "10px" }}
-          variant="contained"
-          color="primary"
-          onClick={submitHandler}
-        >
-          {editNavigation ? "Update" : "Submit"}
-        </Button>
+        {!editNavigation && (
+          <Button
+            style={{ marginLeft: "10px" }}
+            variant="contained"
+            color="primary"
+            onClick={submitHandler}
+          >
+            "Submit"
+          </Button>
+        )}
         {editNavigation && (
           <Button
             style={{ marginLeft: "10px" }}
