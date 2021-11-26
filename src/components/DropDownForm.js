@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core/";
 import AlertComponent from "../components/AlertComponent";
 import { API } from "../constants/extras";
+import AlertDialogComponent from "../components/AlertDialogComponent"
 
 export default function DropDownForm(props) {
   const [updateNavigation, setUpdateNavigation] = useState(null);
@@ -25,6 +26,7 @@ export default function DropDownForm(props) {
   const [editDropdown, setEditDropdown] = useState(false);
   const [allDropdown, setAllDropDown] = useState([]);
   const [updateDropdown, setUpdateDropdown] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const { token, addAlert } = props;
 
@@ -68,6 +70,14 @@ export default function DropDownForm(props) {
   const styles = {
     margin: "10px",
     width: "300px",
+  };
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   const resetAll = () => {
@@ -138,8 +148,7 @@ export default function DropDownForm(props) {
     }
   };
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
+  const submitHandler = async () => {
     if (!editDropdown) {
       if (isCorrect()) {
         const requestOptions = {
@@ -228,7 +237,7 @@ export default function DropDownForm(props) {
           alignContent: "center",
         }}
       >
-        <h2>Add Navigation Dropdown</h2>
+        <h2>{editDropdown ? "Delete Navigation Dropdown" : "Add Navigation Dropdown"}</h2>
       </div>
       <div
         style={{
@@ -252,7 +261,7 @@ export default function DropDownForm(props) {
               props.shuffleForm();
             }}
           >
-            {"Add a new navigation button"}
+            {"Add or delete navigation button"}
           </Button>
         </div>
         <div
@@ -401,11 +410,20 @@ export default function DropDownForm(props) {
           style={{ marginLeft: "10px" }}
           variant="contained"
           color={editDropdown ? "error" : "primary"}
-          onClick={submitHandler}
+          onClick={editDropdown ? handleOpenDialog : submitHandler}
         >
           {editDropdown ? "Delete" : "Submit"}
         </Button>
       </div>
+      <AlertDialogComponent
+        title="Are you sure you want to delete the following navigation tab?"
+        openDialog={openDialog}
+        onDisagree={handleCloseDialog}
+        onAgree={() => {
+          submitHandler();
+          handleCloseDialog();
+        }}
+      />
     </React.Fragment>
   );
 
