@@ -4,12 +4,32 @@ export const DEPARTMENTS = [
     value: "All",
   },
   {
+    title: "Academic",
+    value: "Academic",
+  },
+  {
+    title: "Accounts",
+    value: "Accounts",
+  },
+  {
+    title: "Admin",
+    value: "Admin",
+  },
+  {
     title: "Biotechnology",
     value: "Biotechnology",
   },
   {
+    title: "Central Stores",
+    value: "Central Stores",
+  },
+  {
     title: "Chemical",
     value: "Chemical",
+  },
+  {
+    title: "Chemistry",
+    value: "Chemistry",
   },
   {
     title: "Civil",
@@ -20,12 +40,28 @@ export const DEPARTMENTS = [
     value: "Computer Science",
   },
   {
+    title: "E&ICT",
+    value: "E&ICT",
+  },
+  {
+    title: "E&MU",
+    value: "E&MU",
+  },
+  {
     title: "Electronics & Communication",
     value: "Electronics & Communication",
   },
   {
     title: "Electrical & Electronics",
     value: "Electrical & Electronics",
+  },
+  {
+    title: "Humanities",
+    value: "Humanities",
+  },
+  {
+    title: "Mathematics",
+    value: "Mathematics",
   },
   {
     title: "Mechanical",
@@ -49,7 +85,7 @@ export const DEPARTMENTS = [
   },
 ];
 
-export const DEPARTMENTSNAMES = ["All","cse","ece","che","be","me","pe","physics","sm","mathematics"];
+export const DEPARTMENTSNAMES = ["All","academic", "accounts","admin","biotech","central store","chemical","chemistry","civil","cse","E&ICT","E&mU","electronics","electrical","humanities","mathematics","metallurgy","physical education","physics","school of management"];
 export const API = "http://daa.nitw.ac.in:8080/api";
 export const STATIC_API = "http://daa.nitw.ac.in:8080/static";
 export const TEST_API = "https://insti-web-backend.herokuapp.com/api";
