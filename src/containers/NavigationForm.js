@@ -13,6 +13,7 @@ import {
 import AlertComponent from "../components/AlertComponent";
 import { API } from "../constants/extras";
 import DropDownForm from "../components/DropDownForm";
+import AlertDialogComponent from "../components/AlertDialogComponent"
 
 export default function NavigationForm(props) {
   const [dropdownForm, setDropDownForm] = useState(false);
@@ -24,6 +25,7 @@ export default function NavigationForm(props) {
   const [editNavigation, setEditNavigation] = useState(false);
   const [allNavigation, setAllNavigations] = useState([]);
   const [updateNavigation, setUpdateNavigation] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const { token, addAlert } = props;
 
@@ -60,6 +62,14 @@ export default function NavigationForm(props) {
   const styles = {
     margin: "10px",
     width: "300px",
+  };
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   const resetAll = () => {
@@ -208,7 +218,7 @@ export default function NavigationForm(props) {
           alignContent: "center",
         }}
       >
-        <h2>Add Navigation</h2>
+        <h2>{editNavigation ? "Delete Navigation Tab" : "Add Navigation Tab"}</h2>
       </div>
       <div
         style={{
@@ -232,7 +242,7 @@ export default function NavigationForm(props) {
               shuffleDropDownForm();
             }}
           >
-            {"Add a new dropdown tab"}
+            {"Add or delete dropdown tab"}
           </Button>
         </div>
         <div
@@ -332,7 +342,7 @@ export default function NavigationForm(props) {
           </FormControl>
         )}
       </div>
-
+  
       <div style={{ display: "flex", justifyContent: "center" }}>
         {!editNavigation && (
           <Button
@@ -349,12 +359,21 @@ export default function NavigationForm(props) {
             style={{ marginLeft: "10px" }}
             variant="contained"
             color="error"
-            onClick={deleteHandler}
+            onClick={handleOpenDialog}
           >
             {"Delete"}
           </Button>
         )}
       </div>
+      <AlertDialogComponent
+        title="Are you sure you want to delete the following navigation tab?"
+        openDialog={openDialog}
+        onDisagree={handleCloseDialog}
+        onAgree={() => {
+          deleteHandler();
+          handleCloseDialog();
+        }}
+      />
     </React.Fragment>
   );
 
