@@ -33,6 +33,7 @@
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.4",
     "date-fns": "2.23.0",
+    "editorjs-style": "^3.0.2",
     "export-from-json": "^1.4.0",
     "file-system": "^2.2.2",
     "fs": "0.0.1-security",

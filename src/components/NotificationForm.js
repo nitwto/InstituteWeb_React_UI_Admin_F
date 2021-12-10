@@ -15,7 +15,7 @@ import {
   Select,
   MenuItem,
 } from "@material-ui/core/";
-import { DatePicker,DateTimePicker, LocalizationProvider } from "@material-ui/lab";
+import { DateTimePicker, LocalizationProvider } from "@material-ui/lab";
 import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 
 import { isCorrect } from "../util/formHelpers";

@@ -1,7 +1,9 @@
-import ImageTool from '@editorjs/image';
-import { API } from './extras';
-const Header = require('@editorjs/header');
-const List = require("@editorjs/list")
+import ImageTool from "@editorjs/image";
+import { API } from "./extras";
+// import EditorJSStyle from 'editorjs-style'
+
+const Header = require("@editorjs/header");
+const List = require("@editorjs/list");
 const Checklist = require("@editorjs/checklist");
 const Quote = require("@editorjs/quote");
 const Delimiter = require("@editorjs/delimiter");
@@ -11,146 +13,140 @@ const Link = require("@editorjs/link");
 const Warning = require("@editorjs/warning");
 const Marker = require("@editorjs/marker");
 const InlineCode = require("@editorjs/inline-code");
-
+const EditorJSStyle = require('editorjs-style')
 
 export const tools = {
-    /**
-     * Each Tool is a Plugin. Pass them via 'class' option with necessary settings {@link docs/tools.md}
-     */
-    header: {
-        class: Header,
-        inlineToolbar: ['marker', 'link'],
-        config: {
-            placeholder: 'Header'
-        },
-        shortcut: 'CMD+SHIFT+H'
+  /**
+   * Each Tool is a Plugin. Pass them via 'class' option with necessary settings {@link docs/tools.md}
+   */
+  header: {
+    class: Header,
+    inlineToolbar: ["marker", "link"],
+    config: {
+      placeholder: "Header",
     },
+    shortcut: "CMD+SHIFT+H",
+  },
 
-    /**
-     * Or pass class directly without any configuration
-     */
-    // image: {
-    //     class: ImageTool,
-    //     config: {
-    //         endpoints: {
-    //         byFile: `${API}/uploadImg`, // Your backend file uploader endpoint
-    //         byUrl: `${API}/fetchUrl`, // Your endpoint that provides uploading by Url
-    //         }
-    //     },
-    //     inlineToolbar: true,
-    // },
+  /**
+   * Or pass class directly without any configuration
+   */
+  // image: {
+  //     class: ImageTool,
+  //     config: {
+  //         endpoints: {
+  //         byFile: `${API}/uploadImg`, // Your backend file uploader endpoint
+  //         byUrl: `${API}/fetchUrl`, // Your endpoint that provides uploading by Url
+  //         }
+  //     },
+  //     inlineToolbar: true,
+  // },
 
-    image: {
-      class: ImageTool,
-      config: {
+  image: {
+    class: ImageTool,
+    config: {
+      /**
+       * Custom uploader
+       */
+      uploader: {
         /**
-         * Custom uploader
+         * Upload file to the server and return an uploaded image data
+         * @param {File} file - file selected from the device or pasted by drag-n-drop
+         * @return {Promise.<{success, file: {url}}>}
          */
-        uploader: {
-          /**
-           * Upload file to the server and return an uploaded image data
-           * @param {File} file - file selected from the device or pasted by drag-n-drop
-           * @return {Promise.<{success, file: {url}}>}
-           */
-          async uploadByFile(file) {
-            console.log(file);
-            const requestOptions = {
-              method: "POST",
-              headers: {
-                
+        async uploadByFile(file) {
+          console.log(file);
+          const requestOptions = {
+            method: "POST",
+            headers: {},
+            body: JSON.stringify(file),
+          };
+          const response = await fetch(`${API}/uploadImg`, requestOptions);
+          let downloadURL = "";
+          if (!response) {
+            return {
+              success: 0,
+              file: {
+                url: downloadURL,
               },
-              body: JSON.stringify(file),
             };
-            const response = await fetch(
-              `${API}/uploadImg`,
-              requestOptions
-            );
-            let downloadURL = ""
-            if(!response){
-              return {
-                success: 0,
-                file: {
-                    url: downloadURL
-                }
-              }
-            }
-            const data = await response.json();
-            if(data.err){
-              return {
-                success: 0,
-                file: {
-                    url: downloadURL
-                }
-              }
-            }
-            downloadURL = data.file_path;
-            return {
-                success: 1,
-                file: {
-                    url: downloadURL
-                }
-            }
-          },
-
-          /**
-           * Send URL-string to the server. Backend should load image by this URL and return an uploaded image data
-           * @param {string} url - pasted image URL
-           * @return {Promise.<{success, file: {url}}>}
-           */
-           async uploadByUrl(url){
-            return {
-                success: 1,
-                file: {
-                    url: url
-              }
-            }
           }
-        }
-      }
-    },
-
-    list: {
-        class: List,
-        inlineToolbar: true,
-        shortcut: 'CMD+SHIFT+L'
-    },
-
-    checklist: {
-        class: Checklist,
-        inlineToolbar: true,
-    },
-
-    quote: {
-        class: Quote,
-        inlineToolbar: true,
-        config: {
-            quotePlaceholder: 'Enter a quote',
-            captionPlaceholder: 'Quote\'s author',
+          const data = await response.json();
+          if (data.err) {
+            return {
+              success: 0,
+              file: {
+                url: downloadURL,
+              },
+            };
+          }
+          downloadURL = data.file_path;
+          return {
+            success: 1,
+            file: {
+              url: downloadURL,
+            },
+          };
         },
-        shortcut: 'CMD+SHIFT+O'
+
+        /**
+         * Send URL-string to the server. Backend should load image by this URL and return an uploaded image data
+         * @param {string} url - pasted image URL
+         * @return {Promise.<{success, file: {url}}>}
+         */
+        async uploadByUrl(url) {
+          return {
+            success: 1,
+            file: {
+              url: url,
+            },
+          };
+        },
+      },
     },
+  },
 
-    warning: Warning,
+  list: {
+    class: List,
+    inlineToolbar: true,
+    shortcut: "CMD+SHIFT+L",
+  },
 
-    marker: {
-        class: Marker,
-        shortcut: 'CMD+SHIFT+M'
+  checklist: {
+    class: Checklist,
+    inlineToolbar: true,
+  },
+
+  quote: {
+    class: Quote,
+    inlineToolbar: true,
+    config: {
+      quotePlaceholder: "Enter a quote",
+      captionPlaceholder: "Quote's author",
     },
-    delimiter: Delimiter,
+    shortcut: "CMD+SHIFT+O",
+  },
 
-    inlineCode: {
-        class: InlineCode,
-        shortcut: 'CMD+SHIFT+C'
-    },
+  warning: Warning,
 
-    embed: Embed,
+  marker: {
+    class: Marker,
+    shortcut: "CMD+SHIFT+M",
+  },
+  delimiter: Delimiter,
 
-    table: {
-        class: Table,
-        inlineToolbar: true,
-        shortcut: 'CMD+ALT+T'
-    },
+  inlineCode: {
+    class: InlineCode,
+    shortcut: "CMD+SHIFT+C",
+  },
 
-    Link: Link,
+  embed: Embed,
 
-}
+  table: {
+    class: Table,
+    inlineToolbar: true,
+    shortcut: "CMD+ALT+T",
+  },
+  style: EditorJSStyle.StyleInlineTool,
+  Link: Link,
+};
