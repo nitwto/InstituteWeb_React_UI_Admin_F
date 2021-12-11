@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { authActions } from "../store/authSlice";
- 
+
 import validator from "validator";
 import {
   FormControl,
@@ -25,19 +25,19 @@ export default function Login(props) {
   const passwordRef = useRef(null);
   const emailRef = useRef(null);
   const dispatch = useDispatch();
- 
+
   let userNameError = false;
   let passwordError = false;
   let emailError = false;
   let userNameErrorText = "";
   let passwordErrorText = "";
   let emailErrorText = "";
- 
+
   const styles = {
     margin: "10px",
     width: "300px",
   };
- 
+
   const resetAll = () => {
     setUserName("");
     setPassword("");
@@ -45,11 +45,11 @@ export default function Login(props) {
     setFocus(false);
     setZeroSubmission(true);
   };
- 
+
   const onChangeHandler = (object) => {
     const value = object.target.value;
     const obj = object.target.id;
- 
+
     if (obj === "userName") {
       setUserName(value);
     } else if (obj === "password") {
@@ -58,12 +58,12 @@ export default function Login(props) {
       setEmail(value);
     }
   };
- 
+
   const isCorrect = () => {
     if (email === "" || !validator.isEmail(email)) {
       return false;
     }
- 
+
     if (
       signUp &&
       (userName === "" ||
@@ -72,10 +72,10 @@ export default function Login(props) {
         password.length < 3)
     )
       return false;
- 
+
     return true;
   };
- 
+
   const getError = () => {
     if (email === "" || !validator.isEmail(email)) {
       emailError = "true";
@@ -85,7 +85,7 @@ export default function Login(props) {
         emailErrorText = "Valid email is required.";
       }
     }
- 
+
     if (signUp) {
       if (password === "" || password.length < 3) {
         passwordError = true;
@@ -95,7 +95,7 @@ export default function Login(props) {
           passwordErrorText = "Password needs to be of greater than 3 chars.";
         }
       }
- 
+
       if (userName === "" || userName.length < 3) {
         userNameError = true;
         if (userName === "") {
@@ -105,7 +105,7 @@ export default function Login(props) {
         }
       }
     }
- 
+
     if (focus) {
       if (emailError) {
         emailRef.current.focus();
@@ -117,7 +117,7 @@ export default function Login(props) {
       setFocus(false);
     }
   };
- 
+
   const submitHandler = async (e) => {
     e.preventDefault();
     if (isCorrect()) {
@@ -131,10 +131,7 @@ export default function Login(props) {
             password,
           }),
         };
-        const response = await fetch(
-          `${API}/signup`,
-          requestOptions
-        );
+        const response = await fetch(`${API}/signup`, requestOptions);
         if (!response) {
           return;
         }
@@ -161,15 +158,14 @@ export default function Login(props) {
             password,
           }),
         };
-        const response = await fetch(
-          `${API}/signin`,
-          requestOptions
-        );
+        const response = await fetch(`${API}/signin`, requestOptions);
         if (!response) {
           return;
         }
         const data = await response.json();
-        console.log(data);
+        sessionStorage.setItem("auth", JSON.stringify(data));
+        // console.log(JSON.parse(sessionStorage.getItem("auth")));
+        // console.log(data);
         if (data.error) {
           console.log("go");
           props.addAlert(<AlertComponent type="error" text={data.error} />);
@@ -185,7 +181,7 @@ export default function Login(props) {
               text="You have been logged in successfully."
             />
           );
- 
+
           props.handleTab("Home");
           resetAll();
         }
@@ -195,7 +191,7 @@ export default function Login(props) {
       setFocus(true);
     }
   };
- 
+
   if (!zeroSubmission) getError();
   return (
     <React.Fragment>
@@ -245,7 +241,7 @@ export default function Login(props) {
             </FormHelperText>
           </FormControl>
         )}
- 
+
         <FormControl fullWidth={true} style={styles} required>
           <InputLabel htmlFor={"password"}>{"Password"}</InputLabel>
           <Input

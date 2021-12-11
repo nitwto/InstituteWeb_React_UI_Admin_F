@@ -10,6 +10,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setField(state, action) {
+      console.log(action.payload.data)
       let newState = { ...action.payload.data };
       return newState;
     },

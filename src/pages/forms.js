@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NotificationForm from "../components/NotificationForm";
 import Login from "../components/Login";
 import { useSelector, useDispatch } from "react-redux";
@@ -73,10 +73,23 @@ export default function Forms() {
     if (!response) {
       return;
     }
+    sessionStorage.removeItem("auth");
     dispatch(authActions.reset());
     handlePresentTab("Home");
   };
 
+  useEffect(() => {
+    const data = JSON.parse(sessionStorage.getItem("auth"));
+    if (data) {
+      dispatch(
+        authActions.setField({
+          data,
+        })
+      );
+    }
+    handlePresentTab("Home");
+  },[dispatch]);
+  // console.log(authDetails);
   return (
     <React.Fragment>
       <div className={classes.root}>
