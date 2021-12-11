@@ -262,7 +262,7 @@ function Uploads(props) {
                 endIcon={<PublishIcon />}
               >
                 <Typography variant="h6" style={ButtonTextStyles}>
-                  Submit
+                  Upload
                 </Typography>
               </Button>
             </Grid>
