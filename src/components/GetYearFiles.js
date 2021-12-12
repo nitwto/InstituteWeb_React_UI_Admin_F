@@ -1,8 +1,13 @@
-import React from 'react'
+import { Button, Grid, Link, List, ListItemText, ListSubheader, TextField } from '@material-ui/core';
+import { Box } from '@material-ui/system';
+import React, { useState } from 'react'
 import { STATIC_API } from '../constants/extras';
+import SearchIcon from "@mui/icons-material/Search";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 
 export default function GetYearFiles({ year , files }) {
+  const [searchString, setSearchString] = useState("");
 
   if(year.length !== 4){
     return(
@@ -47,7 +52,111 @@ export default function GetYearFiles({ year , files }) {
         <div>
           <h5>{`${temp.length} files were Uploaded in ${year}`}</h5>
 
-           <section className="section section-lg bg-default">
+          <Grid container direction="column" marginTop="10vh">
+            <Box sx={{ display: "flex", alignItems: "flex-end", margin: "auto" }}>
+              <SearchIcon sx={{ color: "action.active", mr: 2, my: 0.5 }} />
+              <TextField
+                id="input-with-sx"
+                label="Search with title, departments"
+                variant="standard"
+                onChange={(e) => setSearchString(e.target.value)}
+              />
+            </Box>
+            <List
+              component="nav"
+              aria-labelledby="nested-list-subheader"
+              subheader={
+                <ListSubheader
+                  component="div"
+                  id="nested-list-subheader"
+                ></ListSubheader>
+              }
+            >
+              <table style={{ width: "80%", margin: "auto", marginTop: "2rem" }}>
+                <thead>
+                  <tr
+                    style={{
+                      backgroundColor: "#1976d2",
+                      height: "2.5rem",
+                      fontSize: "1.3rem",
+                      color: "white",
+                    }}
+                  >
+                    <th
+                      style={{ textAlign: "center", fontWeight: "600" }}
+                    >
+                      Title
+                    </th>
+                    <th
+                      style={{ textAlign: "center", fontWeight: "600" }}
+                    >
+                      Description
+                    </th>
+                    <th
+                      style={{ textAlign: "center", fontWeight: "600" }}
+                    >
+                      Departments
+                    </th>
+                    <th
+                      style={{ textAlign: "center", fontWeight: "600" }}
+                    >
+                      File
+                    </th>
+                  </tr>
+                </thead>
+                {temp
+                  .filter(
+                    (item) =>
+                      item.title.toLowerCase().includes(searchString.toLowerCase()) ||
+                      item.description.toLowerCase().includes(searchString.toLowerCase()) ||
+                      item.departments.toLowerCase().includes(searchString.toLowerCase())
+                  )
+                  .map((item) => {
+                    let path = item.file_path;
+                    let path1 = path.replace(/\\/g, "/");
+                    path1 = STATIC_API + "/" + path1;
+                    return (
+                    <tr>
+                      <td>
+                        <ListItemText>
+                          {item.title}
+                        </ListItemText>
+                      </td>
+                      <td>
+                        <ListItemText>
+                          {item.description}
+                        </ListItemText>
+                      </td>
+                      <td>
+                        <ListItemText>
+                          {item.departments}
+                        </ListItemText>
+                      </td>
+                      <td>
+                        
+                        <Link href={path1} className="link-primary" rel="noreferrer" target = "_blank">
+                          <Button
+                            style={{ textTransform: "none" }}
+                          >
+                            <ListItemText>Open</ListItemText>
+                            
+                          </Button>
+                        </Link>
+                        <Button
+                          variant="contained"
+                          endIcon={<ContentCopyIcon />}
+                          onClick={copyLink(path1)}
+                        >
+                        </Button>
+                      </td>
+                    </tr>
+                    )  
+                })}
+              </table>
+            </List>
+          </Grid>
+
+           {/* <section className="section section-lg bg-default">
             <div className="container">
               <div className="row offset-md-top-45 justify-content-sm-center">
                 <div className="col-md-10 ">
@@ -86,12 +195,8 @@ export default function GetYearFiles({ year , files }) {
                 </div>
               </div>
             </div>
-          </section>
+          </section> */}
         </div>
-
-
-        
-
       )}
 
     </div>
