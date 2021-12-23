@@ -12,7 +12,7 @@ import {
   Link,
 } from "@material-ui/core/";
 import AlertComponent from "./AlertComponent";
-import { API } from "../constants/extras";
+import { API, TEST_API } from "../constants/extras";
 
 export default function Login(props) {
   const [signUp, setSignUp] = useState(false);
@@ -158,33 +158,73 @@ export default function Login(props) {
             password,
           }),
         };
-        const response = await fetch(`${API}/signin`, requestOptions);
-        if (!response) {
-          return;
-        }
-        const data = await response.json();
-        sessionStorage.setItem("auth", JSON.stringify(data));
-        // console.log(JSON.parse(sessionStorage.getItem("auth")));
-        // console.log(data);
-        if (data.error) {
-          console.log("go");
-          props.addAlert(<AlertComponent type="error" text={data.error} />);
-        } else {
-          dispatch(
-            authActions.setField({
-              data,
-            })
-          );
-          props.addAlert(
-            <AlertComponent
-              type="success"
-              text="You have been logged in successfully."
-            />
-          );
+        fetch(`${API}/signin`, requestOptions)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("response is not ok");
+            }
+            if (response.status !== 200) {
+              throw new Error("Status code is not 200");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            sessionStorage.setItem("auth", JSON.stringify(data));
+            dispatch(
+              authActions.setField({
+                data,
+              })
+            );
+            props.addAlert(
+              <AlertComponent
+                type="success"
+                text="You have been logged in successfully."
+              />
+            );
 
-          props.handleTab("Home");
-          resetAll();
-        }
+            props.handleTab("Home");
+            resetAll();
+          })
+          .catch((err) => {
+            props.addAlert(
+              <AlertComponent
+                type="error"
+                text="Main server may be down.. falling back to alternate server"
+              />
+            );
+            fetch(`${TEST_API}/signin`, requestOptions)
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("response is not ok");
+                }
+                if (response.status !== 200) {
+                  throw new Error("Status code is not 200");
+                }
+                return response.json();
+              })
+              .then((data) => {
+                sessionStorage.setItem("auth", JSON.stringify(data));
+                dispatch(
+                  authActions.setField({
+                    data,
+                  })
+                );
+                props.addAlert(
+                  <AlertComponent
+                    type="success"
+                    text="You have been logged in successfully on alternate server.. Please contact wsdc team"
+                  />
+                );
+
+                props.handleTab("Home");
+                resetAll();
+              })
+              .catch((err) => {
+                props.addAlert(
+                  <AlertComponent type="error" text="Sign in failed" />
+                );
+              });
+          });
       }
     } else {
       setZeroSubmission(false);
