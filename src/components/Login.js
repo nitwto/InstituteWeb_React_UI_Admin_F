@@ -150,6 +150,8 @@ export default function Login(props) {
           resetAll();
         }
       } else {
+        const controller = new AbortController();
+        const id = setTimeout(() => controller.abort(), 10000);
         const requestOptions = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -157,6 +159,7 @@ export default function Login(props) {
             email,
             password,
           }),
+          signal: controller.signal,
         };
         fetch(`${API}/signin`, requestOptions)
           .then((response) => {
@@ -192,7 +195,18 @@ export default function Login(props) {
                 text="Main server may be down.. falling back to alternate server"
               />
             );
-            fetch(`${TEST_API}/signin`, requestOptions)
+            const controller2 = new AbortController();
+            const id2 = setTimeout(() => controller2.abort(), 10000);
+            const requestOptions2 = {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                email,
+                password,
+              }),
+              signal: controller2.signal,
+            };
+            fetch(`${TEST_API}/signin`, requestOptions2)
               .then((response) => {
                 if (!response.ok) {
                   throw new Error("response is not ok");
@@ -223,6 +237,7 @@ export default function Login(props) {
                 props.addAlert(
                   <AlertComponent type="error" text="Sign in failed" />
                 );
+                console.log(id, id2);
               });
           });
       }
