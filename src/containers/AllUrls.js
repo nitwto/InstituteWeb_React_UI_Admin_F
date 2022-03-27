@@ -9,7 +9,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import AlertComponent from "../components/AlertComponent";
-import { TEST_API } from "../constants/extras";
+import { API } from "../constants/extras";
 import { text_cleaner } from "../util/textCleaners";
 import SearchIcon from "@mui/icons-material/Search";
 export const AllUrls = (props) => {
@@ -25,7 +25,7 @@ export const AllUrls = (props) => {
           Authorization: `Bearer ${token}`,
         },
       };
-      const response = await fetch(`${TEST_API}/page/sitemap`, requestOptions);
+      const response = await fetch(`${API}/page/sitemap`, requestOptions);
       if (!response) {
         addAlert(
           <AlertComponent
@@ -53,7 +53,7 @@ export const AllUrls = (props) => {
         body: JSON.stringify({ url }),
       };
       const response = await fetch(
-        "https://insti-web-backend.herokuapp.com/api/page/get",
+        `${API}/page/get`,
         requestOptions
       );
       const data = await response.json();

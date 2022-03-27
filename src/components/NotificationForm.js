@@ -255,7 +255,7 @@ function NotificationForm(props) {
         body: JSON.stringify(notificationDetails),
       };
       const response = await fetch(
-        `https://insti-web-backend.herokuapp.com/api/notification/delete/${notificationDetails._id}`,
+        `${API}/notification/delete/${notificationDetails._id}`,
         requestOptions
       );
       const data = await response.json();
@@ -303,7 +303,7 @@ function NotificationForm(props) {
       } else {
         requestOptions.method = "PUT";
         const response = await fetch(
-          `https://insti-web-backend.herokuapp.com/api/notification/update/${notificationDetails._id}`,
+          `${API}/notification/update/${notificationDetails._id}`,
           requestOptions
         );
         if (!response) {

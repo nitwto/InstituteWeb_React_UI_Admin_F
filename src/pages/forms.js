@@ -21,6 +21,7 @@ import NavigationForm from "../containers/NavigationForm";
 import RecentFile from "../pages/recentFile";
 import { Divider, Drawer, List, ListItem, Box } from "@material-ui/core";
 import { AllUrls } from "../containers/AllUrls";
+import { API } from "../constants/extras";
 
 // Add other forms and route using react-router-dom
 
@@ -67,7 +68,7 @@ export default function Forms() {
       body: JSON.stringify(),
     };
     const response = await fetch(
-      "https:///insti-web-backend.herokuapp.com/api/signout",
+      `${API}/signout`,
       requestOptions
     );
     if (!response) {

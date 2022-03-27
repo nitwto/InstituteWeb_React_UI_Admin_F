@@ -9,6 +9,7 @@ import {
   FormHelperText,
   Button,
 } from "@material-ui/core";
+import { API } from "../constants/extras";
 
 export default function EditorForm(props) {
   const [url, setUrl] = useState("");
@@ -30,7 +31,7 @@ export default function EditorForm(props) {
         body: JSON.stringify({ url }),
       };
       const response = await fetch(
-        "https:///insti-web-backend.herokuapp.com/api/page/get",
+        `${API}/page/get`,
         requestOptions
       );
       const data = await response.json();
