@@ -10,7 +10,7 @@ export default function App() {
 
   return (
     <div className="App">
-      <Router>
+      <Router basename="webmaster">
         <Route exact path="/" component={Forms} />
         <Route exact path="/E1" component={Editor} />
         <Route exact path="/recent-upload" component={RecentFile} />

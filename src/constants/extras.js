@@ -85,8 +85,8 @@ export const DEPARTMENTS = [
   },
 ];
 
-export const DEPARTMENTSNAMES = ["All","academic", "accounts","admin","biotech","central store","chemical","chemistry","civil","cse","E&ICT","E&mU","electronics","electrical","humanities","mathematics","metallurgy","physical education","physics","school of management"];
-export const API = "https://nitw.ac.in/api";
-export const STATIC_API = "https://nitw.ac.in/static";
+export const DEPARTMENTSNAMES = ["All", "academic", "accounts", "admin", "biotech", "central store", "chemical", "chemistry", "civil", "cse", "E&ICT", "E&mU", "electronics", "electrical", "humanities", "mathematics", "metallurgy", "physical education", "physics", "school of management"];
+export const API = `${process.env.REACT_APP_BACKEND || "http://localhost:8000"}/api`;
+export const STATIC_API = `${process.env.REACT_APP_BACKEND || "http://localhost:8000"}/static`;
 export const TEST_API = "https://insti-web-backend.herokuapp.com/api";
 export const COURSES = ["B. Tech", "M. Tech", "MCA"]; // for placements form
