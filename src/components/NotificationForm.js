@@ -57,7 +57,7 @@ function NotificationForm(props) {
         },
       };
       const response = await fetch(
-        `${API}/notification/getall`,
+        `${API}/notification/getOnesAlso`,
         requestOptions
       );
       if (!response) {
